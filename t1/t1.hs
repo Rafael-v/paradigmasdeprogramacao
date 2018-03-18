@@ -1,4 +1,5 @@
--- Prática: haskell02
+--     Trabalho 1     --
+-- Prática: haskell02 --
 import Data.Char
 
 -- 1. Crie uma função isVowel :: Char -> Bool que verifique se um caracter é uma vogal ou não.
@@ -67,4 +68,17 @@ substituiVogal c
     | otherwise = c
 
 encodeName :: String -> String
-encodeName s = map (substituiVogal) s
+encodeName s = map substituiVogal s
+
+-- 11. Escreva uma função betterEncodeName :: String -> String que substitua vogais em uma string, conforme este esquema: a = 4, e = 3, i = 1, o = 0, u = 00.
+--betterEncodeName :: String -> String
+
+-- 12. Dada uma lista de strings, produzir outra lista com strings de 10 caracteres, usando o seguinte esquema: strings de entrada com mais de 10 caracteres são truncadas, strings com até 10 caracteres são completadas com '.' até ficarem com 10 caracteres.
+dezCaracteres :: String -> String
+dezCaracteres s
+    | (length s < 10) = s ++ replicate (10-length s) '.'
+    | (length s > 10) = take 10 s
+    | otherwise = s
+
+func :: [String] -> [String]
+func s = map dezCaracteres s
