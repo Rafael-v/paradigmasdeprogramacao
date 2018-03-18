@@ -9,34 +9,38 @@ addComma :: [String] -> [String]
 addComma s = map (++ ",") s;
 
 -- 3. Crie uma função htmlListItems :: [String] -> [String], que receba uma lista de strings e retorne outra lista contendo as strings formatadas como itens de lista em HTML.
-concatenar3 :: String -> String
-concatenar3 s = "<LI>" ++ s ++ "</LI>"
+formatar :: String -> String
+formatar s = "<LI>" ++ s ++ "</LI>"
 
-htmlListItems1 :: [String] -> [String]
-htmlListItems1 s = map (concatenar3) s
+htmlListItems :: [String] -> [String] -- SEM lambda
+htmlListItems s = map (formatar) s
 
-htmlListItems2 :: [String] -> [String]
-htmlListItems2 s = map (\x -> "<LI>" ++ x ++ "</LI>") s
+htmlListItemsL :: [String] -> [String] -- COM lambda
+htmlListItemsL s = map (\x -> "<LI>" ++ x ++ "</LI>") s
 
 -- 4. Defina uma função que receba uma string e produza outra retirando as vogais, conforme os exemplos abaixo.
-semVogais :: [Char] -> [Char]
+semVogais :: String -> String -- SEM lambda
 semVogais s = filter (not.isVowel) s
 
-semVogais2 :: [Char] -> [Char]
-semVogais2 s = filter (\x -> not (x `elem` "aeiouAEIOU")) s
+semVogaisL :: String -> String -- COM lambda
+semVogaisL s = filter (\x -> not (x `elem` "aeiouAEIOU")) s
 
 -- 5. Defina uma função que receba uma string, possivelmente contendo espaços, e que retorne outra string substituindo os demais caracteres por '-', mas mantendo os espaços.
-ehEspaco :: Char -> Char
-ehEspaco c = if c == ' ' then ' ' else '-'
+trocaChar :: Char -> Char
+trocaChar c = if (c /= ' ') then '-' else ' '
 
-trocaEspaco :: String -> String
-trocaEspaco s = map (ehEspaco) s
+codifica :: String -> String -- SEM lambda
+codifica s = map (trocaChar) s
 
-trocaEspaco2 :: String -> String
-trocaEspaco2 s = map (\x -> if x /= ' ' then '-' else ' ') s
+codificaL :: String -> String -- COM lambda
+codificaL s = map (\x -> if x /= ' ' then '-' else ' ') s
 
 -- 6. Escreva uma função firstName :: String -> String que, dado o nome completo de uma pessoa, obtenha seu primeiro nome. Suponha que cada parte do nome seja separada por um espaço e que não existam espaços no início ou fim do nome.
 firstName :: String -> String
 firstName s = takeWhile(/= ' ') s
 
+firstName2 :: String -> String
+firstName2 s = head(words s)
+
 -- 7. Escreva uma função isInt :: String -> Bool que verifique se uma dada string só contém dígitos de 0 a 9.
+--isInt :: String -> Bool
