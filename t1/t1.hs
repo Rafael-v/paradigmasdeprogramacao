@@ -55,3 +55,16 @@ lastName s = last (words s)
 -- 9. Escreva uma função userName :: String -> String que, dado o nome completo de uma pessoa, crie um nome de usuário (login) da pessoa, formado por: primeira letra do nome seguida do sobrenome, tudo em minúsculas.
 userName :: String -> String
 userName s = map toLower ([head s] ++ lastName s)
+
+-- 10. Escreva uma função encodeName :: String -> String que substitua vogais em uma string, conforme o esquema a seguir: a = 4, e = 3, i = 2, o = 1, u = 0.
+substituiVogal :: Char -> Char
+substituiVogal c
+    | (c == 'a') || (c == 'A') = '4'
+    | (c == 'e') || (c == 'E') = '3'
+    | (c == 'i') || (c == 'I') = '2'
+    | (c == 'o') || (c == 'O') = '1'
+    | (c == 'u') || (c == 'U') = '0'
+    | otherwise = c
+
+encodeName :: String -> String
+encodeName s = map (substituiVogal) s
