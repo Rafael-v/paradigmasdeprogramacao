@@ -49,6 +49,9 @@ isInt :: String -> Bool
 isInt [] = True
 isInt (x:xs) = if isDigit x then isInt xs else False
 
+isInt2 :: String -> Bool
+isInt2 s = all isDigit s
+
 -- 8. Escreva uma função lastName :: String -> String que, dado o nome completo de uma pessoa, obtenha seu último sobrenome. Suponha que cada parte do nome seja separada por um espaço e que não existam espaços no início ou fim do nome.
 lastName :: String -> String
 lastName s = last (words s)
@@ -71,14 +74,20 @@ encodeName :: String -> String
 encodeName s = map substituiVogal s
 
 -- 11. Escreva uma função betterEncodeName :: String -> String que substitua vogais em uma string, conforme este esquema: a = 4, e = 3, i = 1, o = 0, u = 00.
---betterEncodeName :: String -> String
+substituiVogal2 :: Char -> String
+substituiVogal2 c
+    | (c == 'a') || (c == 'A') = "4"
+    | (c == 'e') || (c == 'E') = "3"
+    | (c == 'i') || (c == 'I') = "1"
+    | (c == 'o') || (c == 'O') = "0"
+    | (c == 'u') || (c == 'U') = "00"
+    | otherwise = [c]
+
+betterEncodeName :: String -> String
 
 -- 12. Dada uma lista de strings, produzir outra lista com strings de 10 caracteres, usando o seguinte esquema: strings de entrada com mais de 10 caracteres são truncadas, strings com até 10 caracteres são completadas com '.' até ficarem com 10 caracteres.
 dezCaracteres :: String -> String
-dezCaracteres s
-    | (length s < 10) = s ++ replicate (10-length s) '.'
-    | (length s > 10) = take 10 s
-    | otherwise = s
+dezCaracteres s = if length s < 10 then s ++ replicate (10-length s) '.' else take 10 s
 
 func :: [String] -> [String]
 func s = map dezCaracteres s
