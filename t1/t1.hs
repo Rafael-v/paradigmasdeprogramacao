@@ -1,4 +1,5 @@
 -- Prática: haskell02
+import Data.Char
 
 -- 1. Crie uma função isVowel :: Char -> Bool que verifique se um caracter é uma vogal ou não.
 isVowel :: Char -> Bool
@@ -43,4 +44,6 @@ firstName2 :: String -> String
 firstName2 s = head(words s)
 
 -- 7. Escreva uma função isInt :: String -> Bool que verifique se uma dada string só contém dígitos de 0 a 9.
---isInt :: String -> Bool
+isInt :: String -> Bool
+isInt [] = True
+isInt (x:xs) = if isDigit x then isInt xs else False
