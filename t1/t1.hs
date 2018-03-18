@@ -50,4 +50,8 @@ isInt (x:xs) = if isDigit x then isInt xs else False
 
 -- 8. Escreva uma função lastName :: String -> String que, dado o nome completo de uma pessoa, obtenha seu último sobrenome. Suponha que cada parte do nome seja separada por um espaço e que não existam espaços no início ou fim do nome.
 lastName :: String -> String
-lastName s = last(words s)
+lastName s = last (words s)
+
+-- 9. Escreva uma função userName :: String -> String que, dado o nome completo de uma pessoa, crie um nome de usuário (login) da pessoa, formado por: primeira letra do nome seguida do sobrenome, tudo em minúsculas.
+userName :: String -> String
+userName s = map toLower ([head s] ++ lastName s)
