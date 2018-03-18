@@ -1,4 +1,5 @@
 --     Trabalho 1     --
+--    Rafael Vales    --
 -- Prática: haskell02 --
 import Data.Char
 
@@ -83,7 +84,8 @@ substituiVogal2 c
     | (c == 'u') || (c == 'U') = "00"
     | otherwise = [c]
 
---betterEncodeName :: String -> String
+betterEncodeName :: String -> String
+betterEncodeName s = concatMap substituiVogal2 s
 
 -- 12. Dada uma lista de strings, produzir outra lista com strings de 10 caracteres, usando o seguinte esquema: strings de entrada com mais de 10 caracteres são truncadas, strings com até 10 caracteres são completadas com '.' até ficarem com 10 caracteres.
 func :: [String] -> [String]
