@@ -1,4 +1,5 @@
 --     Trabalho 1     --
+--    Rafael Vales    --
 -- Prática: haskell02 --
 import Data.Char
 
