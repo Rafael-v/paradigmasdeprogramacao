@@ -83,11 +83,8 @@ substituiVogal2 c
     | (c == 'u') || (c == 'U') = "00"
     | otherwise = [c]
 
-betterEncodeName :: String -> String
+--betterEncodeName :: String -> String
 
 -- 12. Dada uma lista de strings, produzir outra lista com strings de 10 caracteres, usando o seguinte esquema: strings de entrada com mais de 10 caracteres são truncadas, strings com até 10 caracteres são completadas com '.' até ficarem com 10 caracteres.
-dezCaracteres :: String -> String
-dezCaracteres s = if length s < 10 then s ++ replicate (10-length s) '.' else take 10 s
-
 func :: [String] -> [String]
-func s = map dezCaracteres s
+func s = map (\x -> if length x < 10 then x ++ replicate (10-length x) '.' else take 10 x) s
