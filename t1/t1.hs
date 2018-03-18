@@ -47,3 +47,7 @@ firstName2 s = head(words s)
 isInt :: String -> Bool
 isInt [] = True
 isInt (x:xs) = if isDigit x then isInt xs else False
+
+-- 8. Escreva uma função lastName :: String -> String que, dado o nome completo de uma pessoa, obtenha seu último sobrenome. Suponha que cada parte do nome seja separada por um espaço e que não existam espaços no início ou fim do nome.
+lastName :: String -> String
+lastName s = last(words s)
