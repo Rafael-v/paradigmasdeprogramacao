@@ -7,3 +7,8 @@ geraTabela x = (x,x*x):(geraTabela (x-1))
 contido :: Char -> [Char] -> Bool
 contido _ [] = False
 contido c (x:xs) = if (x == c) then True else contido c xs
+
+-- 3. Defina uma função recursiva que receba uma lista de coordenadas de pontos 2D e desloque esses pontos em 2 unidades.
+translate :: [(Float,Float)] -> [(Float,Float)]
+translate [] = []
+translate list = (\(x,y) -> (x+2, y+2))(head list):(translate (tail list))
