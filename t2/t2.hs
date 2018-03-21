@@ -12,3 +12,11 @@ contido c (x:xs) = if (x == c) then True else contido c xs
 translate :: [(Float,Float)] -> [(Float,Float)]
 translate [] = []
 translate list = (\(x,y) -> (x+2, y+2))(head list):(translate (tail list))
+
+-- 4. Defina uma função que receba um número n e retorne uma lista de n tuplas, cada tupla com números de 1 a n e seus respectivos quadrados.
+geraTabela' :: Int -> [(Int,Int)]
+geraTabela' x = inverte (geraTabela x)
+
+inverte :: [(Int,Int)] -> [(Int,Int)]
+inverte [] = []
+inverte (x:xs) = (inverte xs)++[x]
