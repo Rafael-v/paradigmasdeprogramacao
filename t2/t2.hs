@@ -1,3 +1,6 @@
+--  Trabalho 2 Parte 1  --
+--     Rafael Vales     --
+
 -- 1. Usando recursão, escreva uma função geraTabela :: Int -> [(Int,Int)] que produza uma lista com n tuplas, cada tupla com números de n a 1 e seus respectivos quadrados.
 geraTabela :: Int -> [(Int,Int)]
 geraTabela 0 = []
