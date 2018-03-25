@@ -1,3 +1,5 @@
+--  Trabalho 2 Parte 4  --
+--     Rafael Vales     --
 import Data.Char
 
 -- Converte um caracter em um inteiro
@@ -32,3 +34,9 @@ crack cs = encodeStr cs (-factor)
            where factor = head (positions (minimum chitab) chitab)
                  chitab = [ chi2 (rotate n table' ) table | n <- [0..25] ]
                  table' = freqs cs
+                 
+{- -------------------------------------------------------------------------- -}
+
+-- 1. Usando encodeChar e decodeChar, defina uma função shiftChar :: Char -> Int -> Char. Essa função, ao receber um caracter de 'a' a 'z', aplicará um deslocamento de 'n' unidades sobre ele, produzindo outro caracter no intervalo ['a'..'z'].
+shiftChar :: Char -> Int -> Char
+shiftChar c n = decodeChar (mod ((encodeChar c) + n) 26)
