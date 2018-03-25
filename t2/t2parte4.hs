@@ -40,3 +40,7 @@ crack cs = encodeStr cs (-factor)
 -- 1. Usando encodeChar e decodeChar, defina uma função shiftChar :: Char -> Int -> Char. Essa função, ao receber um caracter de 'a' a 'z', aplicará um deslocamento de 'n' unidades sobre ele, produzindo outro caracter no intervalo ['a'..'z'].
 shiftChar :: Char -> Int -> Char
 shiftChar c n = if isLower c then decodeChar (mod ((encodeChar c) + n) 26) else c
+
+-- 2. Usando shiftChar, defina uma função encodeStr :: String -> Int -> String que codifique uma string usando um dado deslocamento.
+encodeStr :: String -> Int -> String
+encodeStr str n = map (\x -> shiftChar x n) str
