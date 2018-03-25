@@ -58,8 +58,8 @@ freqs :: String -> [Float]
 freqs str = map (\x -> percent (countChar x str) (countValids str)) ['a'..'z']
 
 -- 6. Defina uma função positions :: Float -> [Float] -> [Int], que retorne uma lista de posições de um dado número em uma lista. Considere que as posições comecem em zero. Use a função zip como auxiliar no seu código.
-positions :: Float -> [Float] -> [(Float,Float)]
-positions n list = filter (\x -> fst x == n) (zip list [0..])
+positions :: Float -> [Float] -> [Int]
+positions n list = map snd (filter (\x -> fst x == n) (zip list [0..]))
 
 -- Outro modo de implementação
 positions' :: Float -> [Float] -> [Int]
