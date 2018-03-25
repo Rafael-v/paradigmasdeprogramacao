@@ -52,3 +52,7 @@ countValids str = length (filter isLower str)
 -- 4. Defina uma função countChar :: Char -> String -> Int, que retorne a quantidade de um dado caracter em uma string.
 countChar :: Char -> String -> Int
 countChar c str = length (filter (\x -> x == c) str)
+
+-- 5. Usando countValids, countChar e percent, defina uma função freqs :: String -> [Float] que retorne as frequências dos caracteres ['a'..'z'] numa dada string. Use list comprehension. A frequência de um caracter é dada pelo percentual deste caracter entre os caracteres válidos da string.
+freqs :: String -> [Int]
+freqs str = map (\x -> countChar x str) ['a'..'z']
