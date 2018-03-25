@@ -7,3 +7,6 @@ isEanOk :: String -> Bool
 isEanOk str = if (length str) /= 13
   then False
   else (last str == calcCheckDigit str)
+  
+calcCheckDigit :: String -> Int
+calcCheckDigit code = sum (zipWith (*) (myAtoi code) [1,3,1,3,1,3,1,3,1,3,1,3])
