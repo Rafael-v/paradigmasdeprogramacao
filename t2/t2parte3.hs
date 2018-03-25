@@ -8,10 +8,13 @@ https://www.gs1.org/services/how-calculate-check-digit-manually -}
 isEanOk :: String -> Bool
 isEanOk str = if (length str) /= 13
   then False
-  else (last str == calcCheckDigit str)
-  
+  else (digitToInt (last str) == calcCheckDigit str)
+
 calcCheckDigit :: String -> Int
-calcCheckDigit code = sum (zipWith (*) (stringToIntList code) [1,3,1,3,1,3,1,3,1,3,1,3])
+calcCheckDigit code = 10 - (mod (calcSum code) 10)
+
+calcSum :: String -> Int
+calcSum code = sum (zipWith (*) (stringToIntList code) [1,3,1,3,1,3,1,3,1,3,1,3])
 
 stringToIntList :: String -> [Int]
 stringToIntList [] = []
