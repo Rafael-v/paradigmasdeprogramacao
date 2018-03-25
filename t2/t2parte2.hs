@@ -23,3 +23,12 @@ auxBin2Dec (x:xs) n = x*(2^n) + auxBin2Dec xs (n-1)
 bin2dec' :: [Int] -> Int
 bin2dec' [] = undefined
 bin2dec' bits = sum (zipWith (\x y -> x*(2^y)) bits [((length bits)-1),((length bits)-2)..0])
+
+-- 5. Crie uma função recursiva dec2bin :: Int -> [Int] que receba um número inteiro positivo e retorne sua representação em binário, sob forma de uma lista de 0's e 1's.
+dec2bin :: Int -> [Int]
+dec2bin 0 = [0]
+dec2bin n = reverse (calcBin n)
+
+calcBin :: Int -> [Int]
+calcBin 0 = []
+calcBin n = (if (mod n 2 == 1) then 1 else 0):calcBin (div n 2)
