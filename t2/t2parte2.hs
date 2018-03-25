@@ -32,3 +32,7 @@ dec2bin n = reverse (calcBin n)
 calcBin :: Int -> [Int]
 calcBin 0 = []
 calcBin n = (if (mod n 2 == 1) then 1 else 0):calcBin (div n 2)
+
+-- 6. Implemente uma dessas funções: isHex :: String -> Bool ou hex2dec :: String -> Int ou dec2hex :: Int -> String
+isHex :: String -> Bool
+isHex str = all (`elem` "0123456789ABCDEFabcdef") str
