@@ -18,3 +18,8 @@ bin2dec bits = auxBin2Dec bits ((length bits)-1)
 auxBin2Dec :: [Int] -> Int -> Int
 auxBin2Dec [] _ = 0
 auxBin2Dec (x:xs) n = x*(2^n) + auxBin2Dec xs (n-1)
+
+-- 4. Reescreva a função do exercício anterior de forma não-recursiva, usando funções pré-definidas em Haskell. Dê outro nome para a função.
+bin2dec' :: [Int] -> Int
+bin2dec' [] = undefined
+bin2dec' bits = sum (zipWith (\x y -> x*(2^y)) bits [((length bits)-1),((length bits)-2)..0])
