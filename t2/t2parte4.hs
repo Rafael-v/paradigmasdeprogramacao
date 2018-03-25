@@ -48,3 +48,7 @@ encodeStr str n = map (\x -> shiftChar x n) str
 -- 3. Defina uma função countValids :: String -> Int, que receba uma string e retorne a quantidade de seus caracteres contidos no intervalo ['a'..'z'].
 countValids :: String -> Int
 countValids str = length (filter isLower str)
+
+-- 4. Defina uma função countChar :: Char -> String -> Int, que retorne a quantidade de um dado caracter em uma string.
+countChar :: Char -> String -> Int
+countChar c str = length (filter (\x -> x == c) str)
