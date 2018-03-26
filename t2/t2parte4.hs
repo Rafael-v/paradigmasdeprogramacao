@@ -68,10 +68,3 @@ positions' x list = checkEquals 0 (zip list [x,x..])
 checkEquals :: Int -> [(Float,Float)] -> [Int]
 checkEquals _ [] = []
 checkEquals pos (x:xs) = if (fst x == snd x) then pos:(checkEquals (pos+1) xs) else checkEquals (pos+1) xs
-
-
-{- EXTRA 1. (Nova versão do exercício 3)
-Pesquise sobre a funcao de alta ordem fold, tambem chamada de reduce, e suas variacoes foldr, foldl, foldr1, foldl1.
-Forneca uma nova versao de alguma funcao da parte quatro, usando alguma variacao de fold. -}
-countValidsFold :: String -> Int
-countValidsFold str = foldl1 (+) (map (\x -> if (x == ' ') then 0 else 1) str)
