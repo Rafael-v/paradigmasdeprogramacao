@@ -1,3 +1,5 @@
+import Data.Char
+
 {- EXTRA 1
 Pesquise sobre a funcao de alta ordem fold, tambem chamada de reduce, e suas variacoes foldr, foldl, foldr1, foldl1.
 Forneca uma nova versao de alguma funcao da parte quatro, usando alguma variacao de fold.
