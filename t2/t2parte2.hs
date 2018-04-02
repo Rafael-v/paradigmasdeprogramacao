@@ -3,8 +3,11 @@
 
 -- 1. Escreva uma função recursiva isBin :: String -> Bool para verificar se uma dada String representa um número binário, ou seja, contém apenas caracteres '0' ou '1'.
 isBin :: String -> Bool
-isBin [] = True
-isBin (x:xs) = if (x /= '0' && x /= '1') then False else isBin xs
+isBin bin = if (length bin > 0) then charBin bin else False
+
+charBin :: [Char] -> Bool
+charBin [] = True
+charBin (x:xs) = if (x /= '0' && x /= '1') then False else charBin xs
 
 -- 2. Reescreva a função acima de forma não-recursiva. Dê outro nome para ela.
 isBin' :: String -> Bool
