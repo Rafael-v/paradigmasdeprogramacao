@@ -14,6 +14,14 @@ feminino(claudia).
 feminino(ana).
 feminino(isabel).
 
+conjuge(cristina,joao).
+conjuge(joao,cristina).
+conjuge(maria,jorge).
+conjuge(jorge,maria).
+conjuge(claudia,angelo).
+conjuge(angelo,claudia).
+conjuge(ana,vinicius).
+conjuge(vinicius,ana).
 descendente(cristina, nathalia).
 descendente(cristina, claudia).
 descendente(joao,nathalia).
