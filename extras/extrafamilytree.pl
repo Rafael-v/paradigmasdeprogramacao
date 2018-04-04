@@ -35,11 +35,11 @@ pai(X,Y) :- masculino(X), descendente(X,Y).
 mae(X,Y) :- feminino(X), descendente(X,Y).
 filho(X,Y) :- masculino(X), descendente(Y,X).
 filha(X,Y) :- feminino(X), descendente(Y,X).
-irmao(X,Y) :- masculino(X).
-irma(X,Y) :- feminino(X).
-primo(X,Y) :- masculino(X).
+irmao(X,Y) :- masculino(X), descendente(A, X), descendente(A, Y), A == B.
+irma(X,Y) :- feminino(X), descendente(A, X), descendente(B, Y), A == B.
+/*primo(X,Y) :- masculino(X).
 prima(X,Y) :- feminino(X).
 tio(X,Y) :- masculino(X).
 tia(X,Y) :- feminino(X).
 sobrinho(X,Y) :- masculino(X).
-sobrina(X,Y) :- feminino(X).
+sobrina(X,Y) :- feminino(X).*/
