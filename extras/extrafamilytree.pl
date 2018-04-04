@@ -1,4 +1,4 @@
-% Desenho dessa árvore genealógica: https://i.imgur.com/r1imj3r.png
+% Desenho da árvore genealógica montada abaixo: https://i.imgur.com/r1imj3r.png
 
 masculino(joao).
 masculino(jorge).
