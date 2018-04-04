@@ -31,15 +31,16 @@ descendente(vinicius,gustavo).
 descendente(ana,thiago).
 descendente(ana,gustavo).
 
+avo(X,Y) :- descendente(X,A), descendente(A,Y).
 pai(X,Y) :- masculino(X), descendente(X,Y).
 mae(X,Y) :- feminino(X), descendente(X,Y).
 filho(X,Y) :- masculino(X), descendente(Y,X).
 filha(X,Y) :- feminino(X), descendente(Y,X).
-irmao(X,Y) :- masculino(X), descendente(A, X), descendente(A, Y), A == B.
-irma(X,Y) :- feminino(X), descendente(A, X), descendente(B, Y), A == B.
-/*primo(X,Y) :- masculino(X).
-prima(X,Y) :- feminino(X).
-tio(X,Y) :- masculino(X).
-tia(X,Y) :- feminino(X).
-sobrinho(X,Y) :- masculino(X).
-sobrina(X,Y) :- feminino(X).*/
+irmao(X,Y) :- masculino(X), descendente(A, X), descendente(A, Y).
+irma(X,Y) :- feminino(X), descendente(A, X), descendente(A, Y).
+tio(X,Y) :- masculino(X), descendente(A,Y), irmao(X,A).
+tia(X,Y) :- feminino(X), descendente(A,Y), irma(X,A).
+primo(X,Y) :- masculino(X), descendente(A,Y), (tio(A,X); tia(A,X)).
+prima(X,Y) :- feminino(X), descendente(A,Y), (tio(A,X); tia(A,X)).
+sobrinho(X,Y) :- masculino(X), (tio(Y,X); tia(Y,X)).
+sobrina(X,Y) :- feminino(X), (tio(Y,X); tia(Y,X)).
