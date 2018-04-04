@@ -1,4 +1,4 @@
-% Desenho da árvore genealógica montada abaixo: https://i.imgur.com/r1imj3r.png
+% Desenho dessa árvore genealógica: https://i.imgur.com/r1imj3r.png
 
 masculino(joao).
 masculino(jorge).
@@ -39,7 +39,6 @@ descendente(vinicius,gustavo).
 descendente(ana,thiago).
 descendente(ana,gustavo).
 
-% Relações de parentesco
 avo(X,Y) :- descendente(X,A), descendente(A,Y).
 pai(X,Y) :- masculino(X), descendente(X,Y).
 mae(X,Y) :- feminino(X), descendente(X,Y).
@@ -53,8 +52,8 @@ primo(X,Y) :- masculino(X), descendente(A,Y), (tio(A,X); tia(A,X)).
 prima(X,Y) :- feminino(X), descendente(A,Y), (tio(A,X); tia(A,X)).
 sobrinho(X,Y) :- masculino(X), (tio(Y,X); tia(Y,X)).
 sobrina(X,Y) :- feminino(X), (tio(Y,X); tia(Y,X)).
-neto(X,Y) :- masculino(X), avo(Y,X).
-neta(X,Y) :- feminino(X), avo(Y,X).
+neto(X,Y) :- masculino(X), descendente(Y,A), descendente(A,X).
+neta(X,Y) :- feminino(X), descendente(Y,A), descendente(A,X).
 cunhado(X,Y) :- masculino(X), irmao(X,A), conjuge(A,Y).
 cunhado(X,Y) :- masculino(X), conjuge(X,A), irma(A,Y).
 cunhada(X,Y) :- feminino(X), irma(X,A), conjuge(A,Y).
