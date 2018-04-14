@@ -24,3 +24,16 @@ zipmult(L1,L2,L3) :-
     L3 = [H3|T3],
     H3 is H1 * H2,
     zipmult(T1,T2,T3).
+
+% 6. Defina um predicado potencias(N,L), de forma que L seja uma lista com as N primeiras potências de 2, sendo a primeira 2^0 e assim por diante.
+potencias(0,[]).
+potencias(N,L) :-
+    N > 0,
+    potAux(N,L,0).
+
+potAux(N,[],N).
+potAux(N,L,I) :-
+    L = [H|T],
+    H is 2**I,
+    I1 is I + 1,
+    potAux(N,T,I1).
