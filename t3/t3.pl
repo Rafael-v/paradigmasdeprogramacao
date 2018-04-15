@@ -43,6 +43,6 @@ positivos([],[]).
 positivos(L1, L2) :-
     L1 = [H1|T1],
     L2 = [H2|T2],
-    (H1 >= 0 -> H2 is H1 ; true),
-    (H1 >= 0 -> append([], T2, T) ; append([H2], T2, T)),
+    (H1 > 0 -> H2 is H1 ; true),
+    (H1 > 0 -> T = T2 ; T = L2),
     positivos(T1,T).
