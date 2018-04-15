@@ -41,11 +41,10 @@ potAux(N,L,I) :-
     potAux(N,T,I1).
 
 % 7. Defina um predicado positivos(L1,L2), de forma que L2 seja uma lista só com os elementos positivos de L1.
-positivos([],[]).
+positivos([],[]) :- !.
 positivos(L1, L2) :-
     L1 = [H1|T1],
-    L2 = [H2|T2],
-    (H1 > 0 -> H2 is H1 ; true),
+    (H1 > 0 -> L2 = [H1|T2] ; true),
     (H1 > 0 -> T = T2 ; T = L2),
     positivos(T1,T).
 
