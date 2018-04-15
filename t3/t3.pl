@@ -73,4 +73,4 @@ azulejos(NA,NQ) :-
     D is floor(sqrt(NA)),
     NA1 is NA - (D*D),
     azulejos(NA1,NQ1),
-	NQ is NQ1 + 1.
+    NQ is NQ1 + 1.
