@@ -46,3 +46,10 @@ positivos(L1, L2) :-
     (H1 > 0 -> H2 is H1 ; true),
     (H1 > 0 -> T = T2 ; T = L2),
     positivos(T1,T).
+
+% 8. Considere que L1 e L2 sejam permutações de uma lista de elementos distintos, sem repetições. Sabendo disso, defina um predicado mesmaPosicao(A,L1,L2) para verificar se um elemento A está na mesma posição nas listas L1 e L2.
+mesmaPosicao(A,[A|_],[A|_]).
+mesmaPosicao(A,L1,L2) :-
+    L1 = [_|T1],
+    L2 = [_|T2],
+    mesmaPosicao(A,T1,T2).
