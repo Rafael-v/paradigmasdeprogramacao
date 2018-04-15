@@ -5,10 +5,12 @@ zeroInit(L) :- [0|_] = L.
 has5(L) :- L = [_,_,_,_,_].
 
 % 3. Defina um predicado hasN(L,N) que é verdadeiro se L for uma lista de N elementos.
-hasN(L,N) :- length(L,N).
+hasN(L,N) :-
+    N > 0,
+    length(L,N).
 
 % 4. Defina um predicado potN0(N,L), de forma que L seja uma lista de potências de 2, com expoentes de N a 0.
-potN0(0,[1]).
+potN0(0,[1]) :- !.
 potN0(N,L) :-
     N > 0,
     L = [H|T],
@@ -17,7 +19,7 @@ potN0(N,L) :-
     potN0(N1,T).
 
 % 5. Defina um predicado zipmult(L1,L2,L3), de forma que cada elemento da lista L3 seja o produto dos elementos de L1 e L2 na mesma posição do elemento de L3.
-zipmult([],[],[]).
+zipmult([],[],[]) :- !.
 zipmult(L1,L2,L3) :-
     L1 = [H1|T1],
     L2 = [H2|T2],
@@ -26,7 +28,7 @@ zipmult(L1,L2,L3) :-
     zipmult(T1,T2,T3).
 
 % 6. Defina um predicado potencias(N,L), de forma que L seja uma lista com as N primeiras potências de 2, sendo a primeira 2^0 e assim por diante.
-potencias(0,[]).
+potencias(0,[]) :- !.
 potencias(N,L) :-
     N > 0,
     potAux(N,L,0).
@@ -48,7 +50,7 @@ positivos(L1, L2) :-
     positivos(T1,T).
 
 % 8. Considere que L1 e L2 sejam permutações de uma lista de elementos distintos, sem repetições. Sabendo disso, defina um predicado mesmaPosicao(A,L1,L2) para verificar se um elemento A está na mesma posição nas listas L1 e L2.
-mesmaPosicao(A,[A|_],[A|_]).
+mesmaPosicao(A,[A|_],[A|_]) :- !.
 mesmaPosicao(A,L1,L2) :-
     L1 = [_|T1],
     L2 = [_|T2],
