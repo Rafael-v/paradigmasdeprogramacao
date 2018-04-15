@@ -67,9 +67,10 @@ comissaoAux(H,[H|T],T).
 comissaoAux(X,[_|T],R) :- comissaoAux(X,T,R).
 
 % 10 .(Adaptado de OBI2006-F1N1) Tem-se N azulejos 10cm x 10cm e, com eles, deve-se montar um conjunto de quadrados de modo a utilizar todos os azulejos dados, sem sobrepô-los. Inicialmente, deve-se montar o maior quadrado possível; então, com os azulejos que sobraram, deve-se montar o maior quadrado possível, e assim sucessivamente. Por exemplo, se forem dados 31 azulejos, o conjunto montado terá 4 quadrados. Para resolver este problema, você deverá definir um predicado azulejos(NA, NQ), de forma que NQ seja o número de quadrados que se deve montar com NA azulejos.
-azulejosAux(0,0).
-azulejosAux(NA,NQ) :-
+azulejos(0,0) :- !.
+azulejos(NA,NQ) :-
+    NA >= 0,
     D is floor(sqrt(NA)),
     NA1 is NA - (D*D),
-    azulejosAux(NA1,NQ1),
-    NQ is NQ1 + 1.
+    azulejos(NA1,NQ1),
+	NQ is NQ1 + 1.
