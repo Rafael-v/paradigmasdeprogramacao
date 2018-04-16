@@ -6,7 +6,7 @@ has5(L) :- L = [_,_,_,_,_].
 
 % 3. Defina um predicado hasN(L,N) que é verdadeiro se L for uma lista de N elementos.
 hasN(L,N) :-
-    N > 0,
+    N >= 0,
     length(L,N).
 
 % 4. Defina um predicado potN0(N,L), de forma que L seja uma lista de potências de 2, com expoentes de N a 0.
