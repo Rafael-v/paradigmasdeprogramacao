@@ -33,7 +33,7 @@ potencias(N,L) :-
     N > 0,
     potAux(N,L,0).
 
-potAux(N,[],N).
+potAux(N,[],N) :- !.
 potAux(N,L,I) :-
     L = [H|T],
     H is 2**I,
