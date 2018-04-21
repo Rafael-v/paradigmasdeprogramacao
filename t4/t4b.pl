@@ -38,3 +38,23 @@ regra5(X) :-
     nth0(PosKelly,X,k),
     PosNeto is PosKelly + 3,
     nth0(PosNeto,X,n).
+
+/*
+     Questão 21. Qual das seguintes alternativas é
+     uma possível lista completa e correta dos nadadores
+     do primeiro para o último?
+     (A) Dulce, Kelly, Silvia, Guto, Neto, Beto, Júlia, Vivian
+     (B) Dulce, Silvia, Kelly, Guto, Neto, Júlia, Beto, Vivian
+     (C) Beto, Kelly, Silvia, Guto, Neto, Júlia, Vivian, Dulce
+     (D) Beto, Guto, Kelly, Júlia, Dulce, Neto, Vivian, Silvia
+     (E) Beto, Silvia, Dulce, Kelly, Vivian, Guto, Neto, Júlia
+ */
+ 
+ /*
+  ?- estacionamento([d,k,s,g,n,b,j,v]).
+  ?- estacionamento([d,s,k,g,n,j,b,v]).
+  ?- estacionamento([b,k,s,g,n,j,v,d]).
+  ?- estacionamento([b,g,k,j,d,n,v,s]).
+  ?- estacionamento([b,s,d,k,v,g,n,j]).
+ */
+ 
