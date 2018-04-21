@@ -24,3 +24,7 @@ regra2(X) :-
     nth0(PosNeto,X,n),
     PosVivian > PosJulia,
     PosVivian > PosNeto.
+
+regra3([X|_]) :-
+    X = b;
+    X = d.
