@@ -16,4 +16,11 @@
      - Z é um sucesso de rock.
 */
 
-regra1(CD) :- nth0(3, CD, s).
+regra1(CD) :- CD = [_,_,_,s,_,_,_].
+
+regra2(CD) :-
+    nth0(IdxS,CD,s),
+    nth0(IdxW,CD,w),
+    nth0(IdxY,CD,y),
+    IdxY < IdxS,
+    IdxW < IdxS.
