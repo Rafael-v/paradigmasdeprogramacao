@@ -17,3 +17,10 @@
 */
 
 regra1(X) :- not(X = [_,_,_,_,_,_,_,s]).
+
+regra2(X) :-
+    nth0(PosVivian,X,v),
+    nth0(PosJulia,X,j),
+    nth0(PosNeto,X,n),
+    PosVivian > PosJulia,
+    PosVivian > PosNeto.
