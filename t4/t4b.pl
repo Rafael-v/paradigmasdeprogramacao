@@ -15,3 +15,5 @@
      - Guto nada antes de Júlia, com exatamente uma pessoa nadando entre eles.
      - Kelly nada antes de Neto, com exatamente duas pessoas nadando entre eles.
 */
+
+regra1(X) :- not(X = [_,_,_,_,_,_,_,s]).
