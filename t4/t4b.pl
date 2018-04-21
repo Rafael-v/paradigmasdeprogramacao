@@ -33,3 +33,8 @@ regra4(X) :-
     nth0(PosGuto,X,g),
     PosJulia is PosGuto + 2,
     nth0(PosJulia,X,j).
+
+regra5(X) :-
+    nth0(PosKelly,X,k),
+    PosNeto is PosKelly + 3,
+    nth0(PosNeto,X,n).
