@@ -28,3 +28,8 @@ regra2(X) :-
 regra3([X|_]) :-
     X = b;
     X = d.
+
+regra4(X) :-
+    nth0(PosGuto,X,g),
+    PosJulia is PosGuto + 2,
+    nth0(PosJulia,X,j).
