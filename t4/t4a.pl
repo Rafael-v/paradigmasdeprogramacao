@@ -24,3 +24,8 @@ regra2(CD) :-
     nth0(IdxY,CD,y),
     IdxY < IdxS,
     IdxW < IdxS.
+    
+regra3(CD) :-
+    nth0(IdxT,CD,t),
+    nth0(IdxW,CD,w),
+    IdxT < IdxW.
