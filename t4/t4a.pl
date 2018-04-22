@@ -29,3 +29,7 @@ regra3(CD) :-
     nth0(IdxT,CD,t),
     nth0(IdxW,CD,w),
     IdxT < IdxW.
+
+regra4(X,CD) :- nth1(6,CD,X).
+
+regra6(CD) :- regra4(z,CD).
