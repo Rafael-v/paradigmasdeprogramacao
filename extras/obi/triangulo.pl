@@ -1,5 +1,5 @@
 /*
-  Triângulo
+  Problema: Triângulo (https://olimpiada.ic.unicamp.br/pratique/p1/2014/f1/triangulo/)
   Ana e suas amigas estão fazendo um trabalho de geometria para o colégio, em que precisam formar
   vários triângulos, numa cartolina, com algumas varetas de comprimentos diferentes. Logo elas
   perceberam que não dá para formar triângulos com três varetas de comprimentos quaisquer. Se uma
@@ -29,4 +29,3 @@ triangulo(A,B,C,D) :-
     checa(A,B,D);
     checa(A,C,D);
     checa(B,C,D).
-    
