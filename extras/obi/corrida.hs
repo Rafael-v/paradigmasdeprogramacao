@@ -1,4 +1,4 @@
-/*
+{-
   Problema: Corrida (https://olimpiada.ic.unicamp.br/pratique/p1/2013/f1/corrida/)
   A Federação de Corridas de Charrete (FCC) organiza todo ano a Subida Brigite Cardoso (SBC),
   disputada nas ladeiras de paralelepípedo de Ouro Preto. A corrida é uma das mais tradicionais
@@ -19,7 +19,7 @@
   por hora. Os números das duas charretes são distintos.
   Saída: Imprima uma única linha, contendo um único número inteiro, indicando o número da charrete que
   seria vencedora, conforme descrito acima.
-*/
+-}
 
 corrida :: Int -> Int -> Int -> Int -> Int -> Int -> Int
 corrida n1 d1 v1 n2 d2 v2 = if ( fromIntegral d1/ fromIntegral v1 < fromIntegral d2/ fromIntegral v2 ) then n1 else n2
