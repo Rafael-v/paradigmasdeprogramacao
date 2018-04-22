@@ -38,6 +38,14 @@ regra5(X) :-
     nth0(PosKelly,X,k),
     PosNeto is PosKelly + 3,
     nth0(PosNeto,X,n).
+    
+revezamento(X) :-
+    X = [_,_,_,_,_,_,_,_],
+    regra1(X),
+    regra2(X),
+    regra3(X),
+    regra4(X),
+    regra5(X).
 
 /*
      Questão 21. Qual das seguintes alternativas é
@@ -51,10 +59,10 @@ regra5(X) :-
  */
  
  /*
-  ?- estacionamento([d,k,s,g,n,b,j,v]).
-  ?- estacionamento([d,s,k,g,n,j,b,v]).
-  ?- estacionamento([b,k,s,g,n,j,v,d]).
-  ?- estacionamento([b,g,k,j,d,n,v,s]).
-  ?- estacionamento([b,s,d,k,v,g,n,j]).
+  ?- revezamento([d,k,s,g,n,b,j,v]).
+  ?- revezamento([d,s,k,g,n,j,b,v]).
+  ?- revezamento([b,k,s,g,n,j,v,d]).
+  ?- revezamento([b,g,k,j,d,n,v,s]).
+  ?- revezamento([b,s,d,k,v,g,n,j]).
  */
  
