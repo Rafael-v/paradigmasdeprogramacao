@@ -1,4 +1,4 @@
-/*
+{-
   Problema: Consecutivos (https://olimpiada.ic.unicamp.br/pratique/p1/2012/f1/iguais/)
   Num sorteio que distribui prêmios, um participante inicialmente sorteia um inteiro N e depois N valores. O número de
   pontos do participante é o tamanho da maior sequência de valores consecutivos iguais. Por exemplo, suponhamos que um
@@ -11,7 +11,7 @@
   Entrada: A primeira linha da entrada contém um inteiro N, o número de valores sorteados. A segunda linha contém N valores,
   V1, V2, . . . , VN, na ordem de sorteio, separados por um espaço em branco.
   Saída: Seu programa deve imprimir apenas uma linha, contendo apenas um inteiro, indicando o número de pontos do participante.
-*/
+-}
 
 consecutivos :: Int -> [Int] -> Int
 consecutivos _ list = maior 0 list
