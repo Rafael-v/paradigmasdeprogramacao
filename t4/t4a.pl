@@ -33,3 +33,29 @@ regra3(CD) :-
 regra4(X,CD) :- nth1(6,CD,X).
 
 regra6(CD) :- regra4(z,CD).
+
+cdindependente(CD) :-
+    regra1(CD),
+    regra2(CD),
+    regra3(CD),
+    regra6(CD).
+
+/*
+     Questão 11. Qual das seguintes alternativas poderia
+     ser a ordem das músicas no CD, da primeira para a
+     sétima faixa?
+     (A) T, W, V, S, Y, X, Z
+     (B) V, Y, T, S, W, Z, X
+     (C) X, Y, W, S, T, Z, S
+     (D) Y, T, W, S, X, Z, V
+     (E) Z, T, X, W, V, Y, S
+ */
+ 
+/*
+ ? - cdindependente([t,w,v,s,y,x,z]).
+ ? - cdindependente([v,y,t,s,w,z,x]).
+ ? - cdindependente([x,y,w,s,t,z,s]).
+ ? - cdindependente([y,t,w,s,x,z,v]).
+ ? - cdindependente([z,t,x,w,v,y,s]).
+*/
+ 
