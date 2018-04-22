@@ -1,4 +1,4 @@
-/*
+{-
   Problema: Tacos de bilhar (https://olimpiada.ic.unicamp.br/pratique/p1/2016/f1/tacos-bilhar/)
   Jogos de bilhar, em que tacos são usados para arremessar uma bola contra outras em uma mesa,
   têm muitas variantes, como sinunca, mata-mata, bilhar francês e outras. São muito antigos,
@@ -18,7 +18,7 @@
   indica o comprimento de um taco desejado. As consultas são dadas na entrada na ordem em que o Sr. Jorge
   as executa. Assuma que o estoque está vazio inicialmente.
   Saída: Seu programa deverá imprimir um único número, o número de tacos fabricados.
-*/
+-}
 
 tacosDeBilhar :: Int -> [Int] -> Int
 tacosDeBilhar n list = if (length list /= n) then -1 else (2 * tacos list)
