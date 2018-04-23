@@ -28,4 +28,6 @@ decifra :: String -> String -> String
 decifra alfabeto str =  map (\x -> decodifica x alfabeto "abcdefghijklmnopqrstuvwxyz") str
 
 decodifica :: Char -> String -> String -> Char
+decodifica c [] _ = c
+decodifica c _ [] = c
 decodifica c (x:xs) (y:ys) = if (c == x) then y else decodifica c xs ys
