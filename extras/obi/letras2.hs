@@ -16,9 +16,20 @@
   subsequência de S que é uma cadeia de caracteres crescente.
 -}
 
-letras :: [Char] -> Int
-letras s = 0
+import Data.List
+
+letras :: String -> Int
+letras s = letrasAux (length s) s
+
+letrasAux :: Int -> String -> Int
+letrasAux 0 _ = 0
+letrasAux n s = if (length (filter (\x -> crescente x) (combinacoes n s)) > 0) then n else letrasAux (n-1) s
 
 crescente :: [Char] -> Bool
+crescente [] = True
 crescente [_] = True
 crescente (x:xs) = if (head xs < x) then False else crescente xs
+
+combinacoes :: Int -> [Char] -> [String] -- Function da internet
+combinacoes 0 _ = [[]]
+combinacoes n list = [ (x:xs) | (x:ys) <- tails list, xs <- combinacoes (n-1) ys ]
