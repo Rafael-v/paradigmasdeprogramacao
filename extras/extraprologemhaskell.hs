@@ -15,3 +15,11 @@ um_entre x y (h:t)
     | (length (h:t) <= 2) = False
     | (x == h && y == head (tail t)) = True
     | otherwise = um_entre x y t
+
+
+{- ./prolog3 -}
+
+-- 1. Defina um predicado zeroInit(L) que é verdadeiro se L for uma lista que inicia com o número 0 (zero)
+zeroInit :: [Int] -> Bool
+zeroInit [] = False
+zeroInit (x:xs) = (x == 0)
