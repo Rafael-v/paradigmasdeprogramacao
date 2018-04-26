@@ -40,6 +40,14 @@ potN0' :: Int -> [Int]
 potN0' 0 = [1]
 potN0' n = (2^n):(potN0' (n-1))
 
+-- 5. Defina um predicado zipmult(L1,L2,L3), de forma que cada elemento da lista L3 seja o produto dos elementos de L1 e L2 na mesma posição do elemento de L3.
+zipmult :: [Int] -> [Int] -> [Int]
+zipmult [] [] = []
+zipmult (x:xs) (y:ys) = (x*y):(zipmult xs ys)
+-- Ou simplesmente:
+zipmult' :: [Int] -> [Int] -> [Int]
+zipmult' lst1 lst2 = zipWith (*) lst1 lst2
+
 -- 6. Defina um predicado potencias(N,L), de forma que L seja uma lista com as N primeiras potências de 2, sendo a primeira 2^0 e assim por diante.
 potencias :: Int -> [Int]
 potencias n = [2^x | x <- [0..(n-1)]]
