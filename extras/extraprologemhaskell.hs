@@ -23,14 +23,27 @@ um_entre x y (h:t)
 zeroInit :: [Int] -> Bool
 zeroInit [] = False
 zeroInit (x:xs) = (x == 0)
+-- Ou
+zeroInit' :: [Int] -> Bool
+zeroInit' (0:_) = True
+zeroInit' _ = False
 
 -- 2. Defina um predicado has5(L) que é verdadeiro se L for uma lista de 5 elementos.
 has5 :: [Int] -> Bool
 has5 lst = (length lst == 5)
+-- Ou
+has5' :: [Int] -> Bool
+has5' [_,_,_,_,_] = True
+has5' _ = False
 
 -- 3. Defina um predicado hasN(L,N) que é verdadeiro se L for uma lista de N elementos.
 hasN :: [Int] -> Int -> Bool
-hasN lst n = (length lst == n)
+hasN [] 0 = True
+hasN [] _ = False
+hasN lst n = hasN (tail lst) (n-1)
+-- Ou
+hasN' :: [Int] -> Int -> Bool
+hasN' lst n = (length lst == n)
 
 -- 4. Defina um predicado potN0(N,L), de forma que L seja uma lista de potências de 2, com expoentes de N a 0.
 potN0 :: Int -> [Int]
@@ -44,7 +57,7 @@ potN0' n = (2^n):(potN0' (n-1))
 zipmult :: [Int] -> [Int] -> [Int]
 zipmult [] [] = []
 zipmult (x:xs) (y:ys) = (x*y):(zipmult xs ys)
--- Ou simplesmente:
+-- Ou
 zipmult' :: [Int] -> [Int] -> [Int]
 zipmult' lst1 lst2 = zipWith (*) lst1 lst2
 
