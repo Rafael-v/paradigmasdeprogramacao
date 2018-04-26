@@ -1,5 +1,7 @@
 -- Implementação em Haskell da lista prática de Prolog
 
+import Data.List
+
 {- ./prolog2 -}
 
 -- 1. Defina um predicado ao_lado(X, Y, L) para determinar se X está imediatamente ao lado de Y na lista L. Neste caso, X pode estar imediatamente à esquerda OU à direita de Y.
@@ -75,6 +77,11 @@ mesmaPosicao :: Char -> [Char] -> [Char] -> Bool
 mesmaPosicao _ [] _ = False
 mesmaPosicao _ _ [] = False
 mesmaPosicao c (x:xs) (y:ys) = if (c == x && c == y) then True else mesmaPosicao c xs ys
+
+-- 9. Dada uma lista de N alunos, deseja-se escolher NP alunos (NP < N) para formar uma comissão. Para isso, defina um predicado comissao(NP,LP,C), que permita gerar as possíveis combinações C com NP elementos da lista LP.
+comissao :: Int -> [String] -> [[String]]
+comissao 0 _ = [[]]
+comissao n list = [ (x:xs) | (x:ys) <- tails list, xs <- comissao (n-1) ys ]
 
 -- 10. (Adaptado de OBI2006-F1N1) Tem-se N azulejos 10cm x 10cm e, com eles, deve-se montar um conjunto de quadrados de modo a utilizar todos os azulejos dados, sem sobrepô-los. Inicialmente, deve-se montar o maior quadrado possível; então, com os azulejos que sobraram, deve-se montar o maior quadrado possível, e assim sucessivamente. Por exemplo, se forem dados 31 azulejos, o conjunto montado terá 4 quadrados. Para resolver este problema, você deverá definir um predicado azulejos(NA, NQ), de forma que NQ seja o número de quadrados que se deve montar com NA azulejos.
 azulejos :: Int -> Int
