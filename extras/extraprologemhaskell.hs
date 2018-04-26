@@ -64,3 +64,8 @@ zipmult' lst1 lst2 = zipWith (*) lst1 lst2
 -- 6. Defina um predicado potencias(N,L), de forma que L seja uma lista com as N primeiras potências de 2, sendo a primeira 2^0 e assim por diante.
 potencias :: Int -> [Int]
 potencias n = [2^x | x <- [0..(n-1)]]
+
+-- 7. Defina um predicado positivos(L1,L2), de forma que L2 seja uma lista só com os elementos positivos de L1.
+positivos :: [Int] -> [Int]
+positivos [] = []
+positivos (x:xs) = if (x > 0) then x:(positivos xs) else positivos xs
