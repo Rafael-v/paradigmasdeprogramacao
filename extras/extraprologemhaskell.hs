@@ -35,3 +35,7 @@ hasN lst n = (length lst == n)
 -- 4. Defina um predicado potN0(N,L), de forma que L seja uma lista de potências de 2, com expoentes de N a 0.
 potN0 :: Int -> [Int]
 potN0 n = [2^x | x <- [n,(n-1)..0]]
+
+-- 6. Defina um predicado potencias(N,L), de forma que L seja uma lista com as N primeiras potências de 2, sendo a primeira 2^0 e assim por diante.
+potencias :: Int -> [Int]
+potencias n = [2^x | x <- [0..(n-1)]]
