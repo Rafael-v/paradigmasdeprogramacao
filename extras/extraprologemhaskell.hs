@@ -27,3 +27,7 @@ zeroInit (x:xs) = (x == 0)
 -- 2. Defina um predicado has5(L) que é verdadeiro se L for uma lista de 5 elementos.
 has5 :: [Int] -> Bool
 has5 lst = (length lst == 5)
+
+-- 3. Defina um predicado hasN(L,N) que é verdadeiro se L for uma lista de N elementos.
+hasN :: [Int] -> Int -> Bool
+hasN lst n = (length lst == n)
