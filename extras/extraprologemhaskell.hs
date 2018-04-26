@@ -31,3 +31,7 @@ has5 lst = (length lst == 5)
 -- 3. Defina um predicado hasN(L,N) que é verdadeiro se L for uma lista de N elementos.
 hasN :: [Int] -> Int -> Bool
 hasN lst n = (length lst == n)
+
+-- 4. Defina um predicado potN0(N,L), de forma que L seja uma lista de potências de 2, com expoentes de N a 0.
+potN0 :: Int -> [Int]
+potN0 n = [2^x | x <- [n,(n-1)..0]]
