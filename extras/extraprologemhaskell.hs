@@ -69,3 +69,9 @@ potencias n = [2^x | x <- [0..(n-1)]]
 positivos :: [Int] -> [Int]
 positivos [] = []
 positivos (x:xs) = if (x > 0) then x:(positivos xs) else positivos xs
+
+-- 8. Considere que L1 e L2 sejam permutações de uma lista de elementos distintos, sem repetições. Sabendo disso, defina um predicado mesmaPosicao(A,L1,L2) para verificar se um elemento A está na mesma posição nas listas L1 e L2.
+mesmaPosicao :: Char -> [Char] -> [Char] -> Bool
+mesmaPosicao _ [] _ = False
+mesmaPosicao _ _ [] = False
+mesmaPosicao c (x:xs) (y:ys) = if (c == x && c == y) then True else mesmaPosicao c xs ys
