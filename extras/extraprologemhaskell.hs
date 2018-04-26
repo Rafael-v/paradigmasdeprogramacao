@@ -11,6 +11,7 @@ ao_lado x y (h:t) = if (x == h && y == head t) then True else ao_lado x y t
 -- 2. Defina um predicado um_entre(X, Y, L) para determinar se os elementos X e Y da lista L estão separados por exatamente um elemento.
 um_entre :: Int -> Int -> [Int] -> Bool
 um_entre _ _ [] = False
-um_entre _ _ [_] = False
-um_entre _ _ [_,_] = False
-um_entre x y (h:t) = if (x == h && y == head (tail t)) then True else um_entre x y t
+um_entre x y (h:t)
+    | (length (h:t) <= 2) = False
+    | (x == h && y == head (tail t)) = True
+    | otherwise = um_entre x y t
