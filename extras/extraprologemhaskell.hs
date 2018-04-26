@@ -23,3 +23,7 @@ um_entre x y (h:t)
 zeroInit :: [Int] -> Bool
 zeroInit [] = False
 zeroInit (x:xs) = (x == 0)
+
+-- 2. Defina um predicado has5(L) que é verdadeiro se L for uma lista de 5 elementos.
+has5 :: [Int] -> Bool
+has5 lst = (length lst == 5)
