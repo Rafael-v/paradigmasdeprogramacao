@@ -27,16 +27,22 @@
 -}
 
 expressoes :: String -> Bool
-expressoes str = expressoesAux str 0 0 0
+expressoes str = expressoesAux str 1
 
-expressoesAux :: String -> Int -> Int -> Int -> Bool
-expressoesAux [] par col cha = (par == 0) && (col == 0) && (cha == 0)
-expressoesAux (x:xs) par col cha
-  | (par < 0 || col < 0 || cha < 0) = False
-  | (x == '(') = expressoesAux xs (par+1) col cha
-  | (x == ')') = expressoesAux xs (par-1) col cha
-  | (x == '[') = expressoesAux xs par (col+1) cha
-  | (x == ']') = expressoesAux xs par (col-1) cha
-  | (x == '{') = expressoesAux xs par col (cha+1)
-  | (x == '}') = expressoesAux xs par col (cha-1)
+expressoesAux :: String -> Int -> Bool
+expressoesAux [] _ = True
+expressoesAux str idx
+  | (length str < 2 || idx >= length str) = False
+  | (verifCadeia str (idx-1) idx) = expressoesAux (removeCadeia (idx-1) str) (idx-1)
+  | otherwise = expressoesAux str (idx+1)
+
+verifCadeia :: String -> Int -> Int -> Bool
+verifCadeia str i j
+  | (i < 0) = False
+  | (str !! i == '(' && str !! j == ')') = True
+  | (str !! i == '[' && str !! j == ']') = True
+  | (str !! i == '{' && str !! j == '}') = True
   | otherwise = False
+
+removeCadeia :: Int -> String -> String
+removeCadeia i str = (take (i) str) ++ (drop (i+2) str)
