@@ -16,19 +16,15 @@
      - Z é um sucesso de rock.
 */
 
-regra1(CD) :- CD = [_,_,_,s,_,_,_].
+regra1(CD) :-
+    CD = [_,_,_,s,_,_,_].
 
 regra2(CD) :-
-    nth0(IdxS,CD,s),
-    nth0(IdxW,CD,w),
-    nth0(IdxY,CD,y),
-    IdxY < IdxS,
-    IdxW < IdxS.
+    precede(CD,y,s),
+    precede(CD,w,s).
     
 regra3(CD) :-
-    nth0(IdxT,CD,t),
-    nth0(IdxW,CD,w),
-    IdxT < IdxW.
+    precede(CD,t,w).
 
 regra4(CD,R,RN) :-
     nth1(6,CD,X),
@@ -38,10 +34,15 @@ regra5(_,[],_,[]).
 regra5(CD,[RH|RT],B,BN) :-
     nextto(Banda,RH,CD),
     regra5(CD,RT,B,B1),
-	append([Banda],B1,BN).
+    append([Banda],B1,BN).
 
 regra6(R,RN) :-
     append([z],R,RN).
+
+precede(CD,A,B) :-
+    nth0(Idx1,CD,A),
+    nth0(Idx2,CD,B),
+    Idx1 < Idx2.
 
 cdindependente(CD,R3,B2) :-
     regra1(CD),
