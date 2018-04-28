@@ -30,15 +30,29 @@ regra3(CD) :-
     nth0(IdxW,CD,w),
     IdxT < IdxW.
 
-regra4(X,CD) :- nth1(6,CD,X).
+regra4(CD,R,RN) :-
+    nth1(6,CD,X),
+    append([X],R,RN).
 
-regra6(CD) :- regra4(z,CD).
+regra5(_,[],_,[]).
+regra5(CD,[RH|RT],B,BN) :-
+    nextto(Banda,RH,CD),
+    regra5(CD,RT,B,B1),
+	append([Banda],B1,BN).
 
-cdindependente(CD) :-
+regra6(R,RN) :-
+    append([z],R,RN).
+
+cdindependente(CD,R3,B2) :-
     regra1(CD),
     regra2(CD),
     regra3(CD),
-    regra6(CD).
+    regra4(CD,[],R2),
+    regra5(CD,R2,[],B2),
+    regra6(R2,R3).
+
+questao11(CD) :-
+    cdindependente(CD,_,_).
 
 /*
      Questão 11. Qual das seguintes alternativas poderia
@@ -52,10 +66,10 @@ cdindependente(CD) :-
  */
  
 /*
- ? - cdindependente([t,w,v,s,y,x,z]).
- ? - cdindependente([v,y,t,s,w,z,x]).
- ? - cdindependente([x,y,w,s,t,z,s]).
- ? - cdindependente([y,t,w,s,x,z,v]).
- ? - cdindependente([z,t,x,w,v,y,s]).
+ ? - questao11([t,w,v,s,y,x,z]).
+ ? - questao11([v,y,t,s,w,z,x]).
+ ? - questao11([x,y,w,s,t,z,s]).
+ ? - questao11([y,t,w,s,x,z,v]).
+ ? - questao11([z,t,x,w,v,y,s]).
 */
  
