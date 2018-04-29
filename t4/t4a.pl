@@ -58,9 +58,6 @@ cdindependente(CD,R,B) :-
     regra5(CD,R2,[],B),
     regra6(CD,R2,R).
 
-questao11(CD) :-
-    cdindependente(CD,_,_).
-
 /*
      Questão 11. Qual das seguintes alternativas poderia
      ser a ordem das músicas no CD, da primeira para a
@@ -78,5 +75,33 @@ questao11(CD) :-
  ? - questao11([x,y,w,s,t,z,s]).
  ? - questao11([y,t,w,s,x,z,v]).
  ? - questao11([z,t,x,w,v,y,s]).
+ Correta: Letra D
 */
+
+questao11(CD) :-
+    cdindependente(CD,_,_).
+
+/*
+     Questão 13. Qual das seguintes músicas é
+     necessariamente uma composição da banda?
+     (A) S
+     (B) T
+     (C) X
+     (D) Y
+     (E) W
+ */
  
+/*
+ ? - questao13(s).
+ ? - questao13(t).
+ ? - questao13(x).
+ ? - questao13(y).
+ ? - questao13(w).
+ Correta: Letra C
+*/
+
+questao13(X) :-
+    permutation(Perm,[s,t,v,w,x,y,z]),
+    cdindependente(Perm,_,B),
+    member(X,B),
+    !.
