@@ -26,9 +26,12 @@ regra2(CD) :-
 regra3(CD) :-
     precede(CD,t,w).
 
-regra4(CD,R,RN) :-
+regra4(CD,R,RN,B,BN) :-
     nth1(6,CD,X),
-    append([X],R,RN).
+    append([X],R,RN),
+    nth1(5,CD,Y),
+    nth1(7,CD,Z),
+    append([Y,Z],B,BN).
 
 regra5(_,[],_,[]).
 regra5(CD,[RH|RT],B,BN) :-
