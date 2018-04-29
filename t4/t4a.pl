@@ -36,21 +36,24 @@ regra5(CD,[RH|RT],B,BN) :-
     regra5(CD,RT,B,B1),
     append([Banda],B1,BN).
 
-regra6(R,RN) :-
-    append([z],R,RN).
+regra6(CD,R,RN) :-
+    append([z],R,RN),
+    nth1(IdxZ,CD,z),
+    IdxZ \= 5,
+    IdxZ \= 7.
 
 precede(CD,A,B) :-
     nth0(Idx1,CD,A),
     nth0(Idx2,CD,B),
     Idx1 < Idx2.
 
-cdindependente(CD,R3,B2) :-
+cdindependente(CD,R,B) :-
     regra1(CD),
     regra2(CD),
     regra3(CD),
     regra4(CD,[],R2),
-    regra5(CD,R2,[],B2),
-    regra6(R2,R3).
+    regra5(CD,R2,[],B),
+    regra6(CD,R2,R).
 
 questao11(CD) :-
     cdindependente(CD,_,_).
