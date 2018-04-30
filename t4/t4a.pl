@@ -54,50 +54,50 @@ cdindependente(CD,R,B) :-
     regra1(CD),
     regra2(CD),
     regra3(CD),
-    regra4(CD,[],R2),
-    regra5(CD,R2,[],B),
+    regra4(CD,[],R2,[],B2),
+    regra5(CD,R2,B2,B),
     regra6(CD,R2,R).
 
 /*
-     Questão 11. Qual das seguintes alternativas poderia
-     ser a ordem das músicas no CD, da primeira para a
-     sétima faixa?
-     (A) T, W, V, S, Y, X, Z
-     (B) V, Y, T, S, W, Z, X
-     (C) X, Y, W, S, T, Z, S
-     (D) Y, T, W, S, X, Z, V
-     (E) Z, T, X, W, V, Y, S
- */
+    Questão 11. Qual das seguintes alternativas poderia
+    ser a ordem das músicas no CD, da primeira para a
+    sétima faixa?
+    (A) T, W, V, S, Y, X, Z
+    (B) V, Y, T, S, W, Z, X
+    (C) X, Y, W, S, T, Z, S
+    (D) Y, T, W, S, X, Z, V
+    (E) Z, T, X, W, V, Y, S
+*/
  
 /*
- ? - questao11([t,w,v,s,y,x,z]).
- ? - questao11([v,y,t,s,w,z,x]).
- ? - questao11([x,y,w,s,t,z,s]).
- ? - questao11([y,t,w,s,x,z,v]).
- ? - questao11([z,t,x,w,v,y,s]).
- Correta: Letra D
+  ? - questao11([t,w,v,s,y,x,z]).
+  ? - questao11([v,y,t,s,w,z,x]).
+  ? - questao11([x,y,w,s,t,z,s]).
+  ? - questao11([y,t,w,s,x,z,v]).
+  ? - questao11([z,t,x,w,v,y,s]).
+  Correta: Letra D
 */
 
 questao11(CD) :-
     cdindependente(CD,_,_).
 
 /*
-     Questão 13. Qual das seguintes músicas é
-     necessariamente uma composição da banda?
-     (A) S
-     (B) T
-     (C) X
-     (D) Y
-     (E) W
- */
+    Questão 13. Qual das seguintes músicas é
+    necessariamente uma composição da banda?
+    (A) S
+    (B) T
+    (C) X
+    (D) Y
+    (E) W
+*/
  
 /*
- ? - questao13(s).
- ? - questao13(t).
- ? - questao13(x).
- ? - questao13(y).
- ? - questao13(w).
- Correta: Letra C
+  ? - questao13(s).
+  ? - questao13(t).
+  ? - questao13(x).
+  ? - questao13(y).
+  ? - questao13(w).
+  Correta: Letra C
 */
 
 questao13(X) :-
