@@ -59,10 +59,40 @@ revezamento(X) :-
  */
  
  /*
-  ?- revezamento([d,k,s,g,n,b,j,v]).
-  ?- revezamento([d,s,k,g,n,j,b,v]).
-  ?- revezamento([b,k,s,g,n,j,v,d]).
-  ?- revezamento([b,g,k,j,d,n,v,s]).
-  ?- revezamento([b,s,d,k,v,g,n,j]).
+  ?- questao21([d,k,s,g,n,b,j,v]).
+  ?- questao21([d,s,k,g,n,j,b,v]).
+  ?- questao21([b,k,s,g,n,j,v,d]).
+  ?- questao21([b,g,k,j,d,n,v,s]).
+  ?- questao21([b,s,d,k,v,g,n,j]).
+  Correta: Letra C
  */
  
+ questao21(X) :-
+     revezamento(X).
+ 
+ /*
+     Questão 22. Se Vivian nada antes de Beto, então
+     qual dos seguintes pode ser o segundo a nadar?
+     (A) Silvia
+     (B) Júlia
+     (C) Neto
+     (D) Guto
+     (E) Dulce
+     Correta: Letra D
+ */
+ 
+ /*
+  ?- questao22(s).
+  ?- questao22(j).
+  ?- questao22(n).
+  ?- questao22(g).
+  ?- questao22(d).
+ */
+ 
+questao22(X) :-
+    permutation(Perm,[b,d,g,j,k,n,s,v]),
+    revezamento(Perm),
+    nth1(PosVivian,Perm,v),
+    nth1(PosBeto,Perm,b),
+    PosVivian < PosBeto,
+    nth1(2,Perm,X).
