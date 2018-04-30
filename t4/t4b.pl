@@ -48,47 +48,47 @@ revezamento(X) :-
     regra5(X).
 
 /*
-     Questão 21. Qual das seguintes alternativas é
-     uma possível lista completa e correta dos nadadores
-     do primeiro para o último?
-     (A) Dulce, Kelly, Silvia, Guto, Neto, Beto, Júlia, Vivian
-     (B) Dulce, Silvia, Kelly, Guto, Neto, Júlia, Beto, Vivian
-     (C) Beto, Kelly, Silvia, Guto, Neto, Júlia, Vivian, Dulce
-     (D) Beto, Guto, Kelly, Júlia, Dulce, Neto, Vivian, Silvia
-     (E) Beto, Silvia, Dulce, Kelly, Vivian, Guto, Neto, Júlia
- */
+    Questão 21. Qual das seguintes alternativas é
+    uma possível lista completa e correta dos nadadores
+    do primeiro para o último?
+    (A) Dulce, Kelly, Silvia, Guto, Neto, Beto, Júlia, Vivian
+    (B) Dulce, Silvia, Kelly, Guto, Neto, Júlia, Beto, Vivian
+    (C) Beto, Kelly, Silvia, Guto, Neto, Júlia, Vivian, Dulce
+    (D) Beto, Guto, Kelly, Júlia, Dulce, Neto, Vivian, Silvia
+    (E) Beto, Silvia, Dulce, Kelly, Vivian, Guto, Neto, Júlia
+*/
  
- /*
+/*
   ?- questao21([d,k,s,g,n,b,j,v]).
   ?- questao21([d,s,k,g,n,j,b,v]).
   ?- questao21([b,k,s,g,n,j,v,d]).
   ?- questao21([b,g,k,j,d,n,v,s]).
   ?- questao21([b,s,d,k,v,g,n,j]).
   Correta: Letra C
- */
- 
- questao21(X) :-
+*/
+
+questao21(X) :-
      revezamento(X).
- 
- /*
-     Questão 22. Se Vivian nada antes de Beto, então
-     qual dos seguintes pode ser o segundo a nadar?
-     (A) Silvia
-     (B) Júlia
-     (C) Neto
-     (D) Guto
-     (E) Dulce
-     Correta: Letra D
- */
- 
- /*
+
+/*
+    Questão 22. Se Vivian nada antes de Beto, então
+    qual dos seguintes pode ser o segundo a nadar?
+    (A) Silvia
+    (B) Júlia
+    (C) Neto
+    (D) Guto
+    (E) Dulce
+*/
+
+/*
   ?- questao22(s).
   ?- questao22(j).
   ?- questao22(n).
   ?- questao22(g).
   ?- questao22(d).
+  Correta: Letra D
  */
- 
+
 questao22(X) :-
     permutation(Perm,[b,d,g,j,k,n,s,v]),
     revezamento(Perm),
@@ -96,3 +96,36 @@ questao22(X) :-
     nth1(PosBeto,Perm,b),
     PosVivian < PosBeto,
     nth1(2,Perm,X).
+
+/*
+    Questão 23. Qual das seguintes alternativas é
+    necessariamente verdadeira?
+    (A) O mais cedo que Vivian pode nadar é em
+    oitavo lugar.
+    (B) O mais cedo que Júlia pode nadar é em
+    quinto lugar.
+    (C) O mais cedo que Kelly pode nadar é em
+    terceiro lugar.
+    (D) O mais cedo que Silvia pode nadar é em
+    terceiro lugar.
+    (E) O mais cedo que Neto pode nadar é em
+    quinto lugar.
+*/
+
+/*
+  ?- questao23(v,8).
+  ?- questao23(j,5).
+  ?- questao23(k,3).
+  ?- questao23(s,3).
+  ?- questao23(n,5).
+  Correta: Letra E
+ */
+
+questao23(X,I) :-
+    not(questao23aux(X,I)).
+
+questao23aux(X,I) :-
+    permutation(Perm,[b,d,g,j,k,n,s,v]),
+    revezamento(Perm),
+    nth1(PosX,Perm,X),
+    PosX < I.
