@@ -129,3 +129,31 @@ questao23aux(X,I) :-
     revezamento(Perm),
     nth1(PosX,Perm,X),
     PosX < I.
+
+/*
+    Questão 24. Guto pode nadar em qualquer das
+    ordens abaixo, exceto:
+    (A) sexto lugar
+    (B) quinto lugar
+    (C) quarto lugar
+    (D) terceiro lugar
+    (E) segundo lugar
+*/
+
+/*
+  ?- questao24(6).
+  ?- questao24(5).
+  ?- questao24(4).
+  ?- questao24(3).
+  ?- questao24(2).
+  Correta: Letra A
+ */
+
+questao24(I) :-
+    not(questao24aux(I)).
+
+questao24aux(I) :-
+    permutation(Perm,[b,d,g,j,k,n,s,v]),
+    revezamento(Perm),
+    nth1(PosGuto,Perm,g),
+    PosGuto = I.
