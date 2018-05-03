@@ -1,8 +1,3 @@
-## Resolução de questão da OBI em diferentes paradigmas
-Feito por André L. Rakowski, Natan Luiz e Rafael Vales.
-
-Comparando a implementação de uma questão da OBI em diferentes paradigmas (procedimental, orientado a objetos e funcional) utilizando a linguagem Java.
-
 ## Segredo do Cofre
 Link para o problema: https://olimpiada.ic.unicamp.br/pratique/p1/2017/f1/cofre/
 
