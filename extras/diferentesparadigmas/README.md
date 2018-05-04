@@ -1,7 +1,10 @@
 ## Extra: Diferentes Paradigmas
+
+Feito por André L. Rakowski, Natan Luiz e Rafael Vales
+
 Este trabalho permitiu explorar de forma diferenciada a linguagem de programação Java, ao desenvolver programas envolvendo três paradigmas de programação distintos em uma mesma linguagem.
 
-O extra consiste na resolução do problema [COFRE](https://olimpiada.ic.unicamp.br/pratique/p1/2017/f1/cofre/) na linguagem de programação Java, nos paradigmas **procedural**, **funcional** e **orientado a objetos**.
+O extra consiste na resolução do problema [Segredo do Cofre](https://olimpiada.ic.unicamp.br/pratique/p1/2017/f1/cofre/) na linguagem de programação Java, nos paradigmas **procedural**, **funcional** e **orientado a objetos**.
 
 No que se refere a declaração de variáveis, nota-se uma grande diferença entre as três versões desenvolvidas. Enquanto no paradigma procedural declara-se as variáveis de forma independente, no orientado a objetos é criado um objeto que contém os atributos necessários para a resolução do problema. Já no paradigma funcional além de não existir exatamente um conceito de variável, mas sim parâmetros, os quais são passados através das funções, também não há laços de repetição, ao contrário dos demais nos quais esse conceito está muito presente, obrigando, assim, o uso de recursão.
 
