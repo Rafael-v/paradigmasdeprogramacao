@@ -90,7 +90,7 @@ Funcional:
 ```
  return (int) lst.get(0) > (int) lst.get(1) ? (int) lst.get(1) - 1 : (int) lst.get(0);
 ```
-Orientado a Objetos:
+Orientado a Objetos e Procedural:
 ```
  if (inicio <= fim) {
     [..]
