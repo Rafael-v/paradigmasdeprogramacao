@@ -1,7 +1,7 @@
+import java.io.*;
 import java.util.Scanner;
 
-public class SvgCircle {
-    
+public class SvgCircle {    
     private double x, y, r;
     private String c;
     
@@ -28,14 +28,25 @@ public class SvgCircle {
             circs[i] = new SvgCircle(in.nextDouble(), in.nextDouble(), in.nextDouble(), in.next());
         }
         
-        criaCodigoSvg(altura, largura, circs);
+        geraArquivoSvg(altura, largura, circs);
     }
     
-    private static void criaCodigoSvg(double altura, double largura, SvgCircle[] circs) {
-        System.out.println("<svg height=\"" + altura + "\" width=\"" + largura + "\">");
-        for (SvgCircle circ : circs) {
-            System.out.println("  <circle cx=\"" + circ.x + "\" cy=\"" + circ.y + "\" r=\"" + circ.r + "\" stroke=\"black\" stroke-width=\"3\" fill=\"" + circ.c + "\" />");
+    private static void geraArquivoSvg(double altura, double largura, SvgCircle[] circs) {
+        try {
+            File file = new File("svg.txt");
+            if (!file.exists())
+                file.createNewFile();
+            PrintWriter pw = new PrintWriter(file);
+            
+            pw.println("<svg height=\"" + altura + "\" width=\"" + largura + "\">");
+            for (SvgCircle circ : circs)
+                pw.println("  <circle cx=\"" + circ.x + "\" cy=\"" + circ.y + "\" r=\"" + circ.r + "\" stroke=\"black\" stroke-width=\"3\" fill=\"" + circ.c + "\" />");
+            pw.println("</svg>");
+                        
+            pw.close();
+            System.out.println("Arquivo gerado.");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        System.out.println("</svg>");
     }
 }
