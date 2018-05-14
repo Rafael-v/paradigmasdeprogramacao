@@ -45,7 +45,7 @@ public class SvgCircle {
 
     private static void geraArquivoSvg(int altura, int largura, ArrayList<SvgCircle> circs) {
         try {
-            File file = new File("svg.txt");
+            File file = new File("svg.html");
             if (!file.exists())
                 file.createNewFile();
             PrintWriter pw = new PrintWriter(file);
