@@ -76,7 +76,7 @@ class Main {
 
         System.out.println("\n- Quebrando seus blocos...\n");
         for (Bloco b : blocos) {
-            b.quebraBloco();
+            b = b.quebraBloco();
             System.out.println();
         }
 
