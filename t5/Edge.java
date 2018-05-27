@@ -17,4 +17,12 @@ public class Edge {
         line.setStroke(color);
         return line;
     }
+
+    public Vertex getStart() {
+        return start;
+    }
+
+    public Vertex getEnd() {
+        return end;
+    }
 }
