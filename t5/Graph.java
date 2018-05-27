@@ -16,8 +16,8 @@ public class Graph {
         return v;
     }
 
-    public Edge addEdge(Vertex start, Vertex end, Color color) {
-        Edge e = new Edge(start, end, color);
+    public Edge addEdge(Vertex start, Vertex end, Boolean dotted, Color color) {
+        Edge e = new Edge(start, end, dotted, color);
         edges.add(e);
         return e;
     }
@@ -44,5 +44,18 @@ public class Graph {
 
     public int edgesSize() {
         return edges.size();
+    }
+
+    public int overlapSize() {
+        return 3;
+    }
+
+    public void saveSVG(String fileName) {
+        return;
+    }
+
+    public void reset() {
+        vertices.clear();
+        edges.clear();
     }
 }
