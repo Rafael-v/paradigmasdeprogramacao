@@ -4,4 +4,4 @@
 
 2. Prolog (Programação lógica) **[[t3]](https://github.com/Rafael-v/paradigmasdeprogramacao/tree/master/t3) [[t4]](https://github.com/Rafael-v/paradigmasdeprogramacao/tree/master/t4)**
 
-3. Java (Programação orientada a objetos)
+3. Java (Programação orientada a objetos) **[[t5]](https://github.com/Rafael-v/paradigmasdeprogramacao/tree/master/t5) [[t6]](https://github.com/Rafael-v/paradigmasdeprogramacao/tree/master/t6)**
