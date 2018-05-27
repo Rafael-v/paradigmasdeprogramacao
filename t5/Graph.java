@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
 
 public class Graph {
     private ArrayList<Vertex> vertices;
@@ -17,8 +16,8 @@ public class Graph {
         return v;
     }
 
-    public Edge addEdge(Vertex start, Vertex end) {
-        Edge e = new Edge(start, end);
+    public Edge addEdge(Vertex start, Vertex end, Color color) {
+        Edge e = new Edge(start, end, color);
         edges.add(e);
         return e;
     }
