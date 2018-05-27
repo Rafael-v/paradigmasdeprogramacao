@@ -22,6 +22,22 @@ public class Graph {
         return e;
     }
 
+    public Vertex findVertex(double x, double y) {
+        for (Vertex v : vertices) {
+            if (v.getX() > x-25 && v.getX() < x+25 && v.getY() > y-25 && v.getY() < y+25)
+                return v;
+        }
+        return null;
+    }
+
+    public Edge findEdge(Vertex start, Vertex end) {
+        for (Edge e : edges) {
+            if ((e.getStart() == start || e.getStart() == end) && (e.getEnd() == start || e.getEnd() == end))
+                return e;
+        }
+        return null;
+    }
+
     public int verticesSize() {
         return vertices.size();
     }
