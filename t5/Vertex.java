@@ -2,9 +2,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 
 public class Vertex {
-    public double x, y;
-    public Color color;
-    public char type;
+    private double x, y;
+    private Color color;
+    private char type;
 
     public Vertex(double x_, double y_, char type_, Color color_) {
         x = x_;
@@ -14,7 +14,7 @@ public class Vertex {
     }
 
     public Shape getShape() {
-        Shape s = null;
+        Shape s;
         switch (type) {
             case 'Q': // quadrado
                 s = new Rectangle(x-25, y-25, 50, 50);
@@ -35,5 +35,17 @@ public class Vertex {
 
     public double getY() {
         return y;
+    }
+
+    public char getType() {
+        return type;
+    }
+
+    public String getColor() {
+        String colorHex = String.format("#%02X%02X%02X", 
+            (int)(color.getRed() * 255),
+            (int)(color.getGreen() * 255),
+            (int)(color.getBlue() * 255));
+        return colorHex;
     }
 }
