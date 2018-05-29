@@ -7,9 +7,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
 
-import javafx.geometry.Rectangle2D;
-import javafx.stage.Screen;
-
 public class Graph {
     private ArrayList<Vertex> vertices;
     private ArrayList<Edge> edges;
