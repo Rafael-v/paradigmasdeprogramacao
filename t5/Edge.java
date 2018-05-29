@@ -16,10 +16,16 @@ public class Edge {
         color = color_;
     }
 
-    public Line getLine() {
-        Line line = new Line(start.getX(), start.getY(), end.getX(), end.getY());
+    public Shape getLine() {
+        Shape line = new Line(start.getX(), start.getY(), end.getX(), end.getY());
         if (dotted) line.getStrokeDashArray().addAll(25.0, 20.0, 5.0, 20.0);
+
+        // define a aresta para comecar a partir da borda de cada vertice
+        line = Shape.subtract(line, start.getShape());
+        line = Shape.subtract(line, end.getShape());
+
         line.setStroke(color);
+
         return line;
     }
 
@@ -45,8 +51,7 @@ public class Edge {
     public int numIntersections(ArrayList<Edge> edgeList) {
         int cont = 0;
         for (Edge e : edgeList) {
-            if (start == e.getStart() || start == e.getEnd() || end == e.getStart() || end == e.getEnd())
-                continue; // ignora colisoes nos vertices
+            if (this == e) continue;
             Shape intersect = Shape.intersect(this.getFullLine(), e.getFullLine());
             if (intersect.getBoundsInLocal().getWidth() != -1) {
                 cont++;
@@ -55,7 +60,10 @@ public class Edge {
         return cont;
     }
 
-    private Line getFullLine() {
-        return new Line(start.getX(), start.getY(), end.getX(), end.getY());
+    private Shape getFullLine() {
+        Shape line = new Line(start.getX(), start.getY(), end.getX(), end.getY());
+        line = Shape.subtract(line, start.getShape());
+        line = Shape.subtract(line, end.getShape());
+        return line;
     }
 }
