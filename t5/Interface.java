@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -14,35 +15,31 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.StageStyle;
 
 public class Interface {
-    private String btnCSS, menuCSS;
+    private String btnStyle, menuStyle;
     private ArrayList<Button> btn;
     private ColorPicker cp;
-    private int selected;
-    private char vertexType;
-    private char edgeType;
+    private int vertexType, edgeType, selected;
 
     public Interface() {
-        btnCSS = "-fx-font: 16px Georgia; -fx-padding: 7 20px 7px 20px; -fx-border-radius: 20;";
-        menuCSS = "-fx-background-color: linear-gradient(#3c3c3c, #000000); -fx-padding: 10.0;";
+        btnStyle = "-fx-font: 16px Georgia; -fx-padding: 7 20px 7px 20px; -fx-border-radius: 20;";
+        menuStyle = "-fx-background-color: linear-gradient(#3c3c3c, #000000); -fx-padding: 10.0;";
         btn = new ArrayList<Button>();
         cp = new ColorPicker(Color.BLACK);
-        selected = 0;
-        vertexType = 'C';
-        edgeType = 'N';
+        vertexType = edgeType = selected = 0;
     }
 
     public HBox getToolbar() {
         Label title = new Label("Editor de Grafos    ");
-        title.setStyle("-fx-font: 20px \"Georgia\"; -fx-text-fill: #f0f0f0");
+        title.setStyle("-fx-font: 20px \"Georgia\"; -fx-text-fill: #f0f0f0;");
 
         Button vertex = new Button("Vertice");
         Button edge = new Button("Aresta");
-        optionsButtons(vertex, edge);
+        toolbarButtons(vertex, edge);
 
         ChoiceBox vertexBtn = newChoiceBox(new String[]{"Circulo", "Quadrado", "Triangulo"}, 0);
         ChoiceBox edgeBtn = newChoiceBox(new String[]{"Normal", "Tracejado"}, 1);
@@ -50,48 +47,57 @@ public class Interface {
         HBox toolbar = new HBox(title, vertex, vertexBtn, edge, edgeBtn, cp);
         toolbar.setSpacing(10);
         toolbar.setAlignment(Pos.CENTER);
-        toolbar.setStyle(menuCSS);
+        toolbar.setStyle(menuStyle);
         return toolbar;
     }
 
-    public void optionsButtons(Button vertex, Button edge) {
-        String on = "-fx-background-color: linear-gradient(#e6e6e6, #999999)";
-        String off = "-fx-background-color: #e6e6e6";
+    public HBox getMenu() {
+        HBox menu = new HBox();
+        menu.setSpacing(10);
+        menu.setAlignment(Pos.CENTER);
+        menu.setStyle(menuStyle);
+        for (Button b : btn)
+            menu.getChildren().add(b);
+        return menu;
+    }
+
+    private void toolbarButtons(Button vertex, Button edge) {
+        String on = "-fx-background-color: linear-gradient(#e6e6e6, #999999); -fx-font-weight: bold;";
+        String off = "-fx-background-color: #e6e6e6;";
         vertex.setStyle(on);
         edge.setStyle(off);
 
         vertex.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
-                selected = 0;
                 vertex.setStyle(on);
                 edge.setStyle(off);
+                selected = 0;
             }
         });
 
         edge.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
-                selected = 1;
                 vertex.setStyle(off);
                 edge.setStyle(on);
+                selected = 1;
             }
         });
     }
 
-    public ChoiceBox newChoiceBox(String[] options, int type) {
-        ChoiceBox cb = new ChoiceBox();
-        cb.setItems(FXCollections.observableArrayList (options));
+    private ChoiceBox newChoiceBox(String[] options, int type) {
+        ChoiceBox<String> cb = new ChoiceBox<String>(FXCollections.observableArrayList(options));
         cb.getSelectionModel().select(0);
         cb.setTooltip(new Tooltip("Selecione um formato para " + (type==0 ? "o vertice." : "a aresta.")));
+
         cb.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 if (type == 0)
-                    vertexType = cb.getValue().toString().charAt(0);
+                    vertexType = Arrays.asList(options).indexOf(cb.getValue().toString());
                 else
-                    edgeType = cb.getValue().toString().charAt(0);
+                    edgeType = Arrays.asList(options).indexOf(cb.getValue().toString());
                 selected = type;
             }
         });
-
         return cb;
     }
 
@@ -101,27 +107,17 @@ public class Interface {
         btn.add(buttonCharacteristics(graph));
         btn.add(buttonLeave());
         for (Button b : btn)
-            b.setStyle(btnCSS);
+            b.setStyle(btnStyle);
     }
 
-    public HBox getMenu() {
-        HBox menu = new HBox();
-        menu.setSpacing(10);
-        menu.setAlignment(Pos.CENTER);
-        menu.setStyle(menuCSS);
-        for (Button b : btn)
-            menu.getChildren().add(b);
-        return menu;
-    }
-
-    public Button buttonNewGraph(Pane graphPane, Graph graph) {
+    private Button buttonNewGraph(Pane graphPane, Graph graph) {
         Button b = new Button("Novo Grafo");
         b.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 Alert alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Novo Grafo");
-                alert.setHeaderText("Criando novo grafo...");
-                alert.setContentText("O grafo atual sera perdido. Deseja continuar?");
+                alert.setHeaderText("Deseja criar um novo grafo?");
+                alert.setContentText("O grafo atual sera perdido.");
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK){
@@ -133,7 +129,7 @@ public class Interface {
         return b;
     }
 
-    public Button buttonSaveGraph(Graph graph) {
+    private Button buttonSaveGraph(Graph graph) {
         Button b = new Button("Salvar em SVG");
         b.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
@@ -157,21 +153,21 @@ public class Interface {
         return b;
     }
 
-    public Button buttonCharacteristics(Graph graph) {
+    private Button buttonCharacteristics(Graph graph) {
         Button b = new Button("Caracteristicas");
         b.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Caracteristicas");
                 alert.setHeaderText("Caracteristicas do Grafo");
-                alert.setContentText("Numero de vertices: " + graph.verticesSize() + "\nNumero de arestas: " + graph.edgesSize() + "\nNumero de arestas sobrepostas: " + graph.overlapSize());
+                alert.setContentText("Numero de vertices: " + graph.getVerticesSize() + "\nNumero de arestas: " + graph.getEdgesSize() + "\nNumero de arestas sobrepostas: " + graph.getIntersections());
                 alert.showAndWait();
             }
         });
         return b;
     }
 
-    public Button buttonLeave() {
+    private Button buttonLeave() {
         Button b = new Button("Sair");
         b.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
@@ -193,15 +189,15 @@ public class Interface {
         return selected;
     }
 
-    public char getVertexType() {
+    public int getVertexType() {
         return vertexType;
     }
 
-    public char getEdgeType() {
+    public int getEdgeType() {
         return edgeType;
     }
 
-    public Color getColor() {
+    public Color getCurrentColor() {
         return cp.getValue();
     }
 }
