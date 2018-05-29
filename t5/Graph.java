@@ -4,36 +4,57 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Shape;
+
+import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
 
 public class Graph {
     private ArrayList<Vertex> vertices;
     private ArrayList<Edge> edges;
-    private int overlaps;
+    private int intersections;
 
     public Graph() {
         vertices = new ArrayList<Vertex>();
         edges = new ArrayList<Edge>();
-        overlaps = 0;
+        intersections = 0;
     }
 
-    public Vertex addVertex(double x, double y, char type, Color color) {
+    public int getVerticesSize() {
+        return vertices.size();
+    }
+
+    public int getEdgesSize() {
+        return edges.size();
+    }
+
+    public int getIntersections() {
+        return intersections;
+    }
+
+    public Vertex addVertex(double x, double y, int type, Color color) {
         Vertex v = new Vertex(x, y, type, color);
-        vertices.add(v);
-        return v;
+        if ( !v.vertexCollision(vertices) ) {
+            vertices.add(v);
+            return v;
+        }
+        return null;
     }
 
-    public Edge addEdge(Vertex start, Vertex end, char type, Color color) {
+    public Edge addEdge(Vertex start, Vertex end, int type, Color color) {
         if ((start == end) || (findEdge(start, end) != null))
             return null;
         Edge e = new Edge(start, end, type, color);
         edges.add(e);
+        intersections += e.numIntersections(edges);
         return e;
     }
 
     public Vertex findVertex(double x, double y) {
         for (Vertex v : vertices) {
-            if (v.getX() > x-25 && v.getX() < x+25 && v.getY() > y-25 && v.getY() < y+25)
+            Shape intersect = Shape.intersect(v.getShape(), new Line(x, y, x, y));
+            if (intersect.getBoundsInLocal().getWidth() != -1)
                 return v;
         }
         return null;
@@ -41,54 +62,51 @@ public class Graph {
 
     public Edge findEdge(Vertex start, Vertex end) {
         for (Edge e : edges) {
-            if ((e.getStart() == start || e.getStart() == end) && (e.getEnd() == start || e.getEnd() == end))
+            if ((e.getStart() == start && e.getEnd() == end) || (e.getStart() == end && e.getEnd() == start))
                 return e;
         }
         return null;
     }
 
-    public int verticesSize() {
-        return vertices.size();
-    }
-
-    public int edgesSize() {
-        return edges.size();
-    }
-
-    public int getOverlaps() {
-        return overlaps;
-    }
-
     public void saveSVG(String fileName) {
-        double x, y;
         try {
             File file = new File(fileName + ".html");
             if (!file.exists())
                 file.createNewFile();
             PrintWriter pw = new PrintWriter(file);
 
-            pw.println("<svg height=\"700\" width=\"800\">");
+            // find the minimum height and width to draw the graph
+            double width = 0, height = 0;
+            for(Vertex v : vertices) {
+                if (v.getX() > width)  width = v.getX();
+                if (v.getY() > height) height = v.getY();
+            }
+            width += 50; height += 50;
+
+            pw.println("<!-- Made in Graph Editor -->");
+            pw.println("<svg height=\"" + height + "\" width=\"" + width + "\">");
 
             // write edges
             for (Edge e : edges) {
                 Vertex v1 = e.getStart();
                 Vertex v2 = e.getEnd();
-                pw.println("  <line id=\"" + e + "\" x1=\"" + v1.getX() + "\" y1=\"" + v1.getY() + "\" x2=\"" + v2.getX() + "\" y2=\"" + v2.getY() + "\" style=\"stroke:" + e.getColor() + ";stroke-width:1px;" + (e.dotted() ? "stroke-dasharray:25px,20px,5px,20px;" : "") + "\"/>");
+                pw.println("  <line id=\"" + e + "\" x1=\"" + v1.getX() + "\" y1=\"" + v1.getY() + "\" x2=\"" + v2.getX() + "\" y2=\"" + v2.getY() + "\" style=\"stroke:" + e.getColorHex() + ";stroke-width:1px;" + (e.dotted() ? "stroke-dasharray:25px,20px,5px,20px;" : "") + "\"/>");
             }
 
             // write vertices
             for (Vertex v : vertices) {
-                x = v.getX();
-                y = v.getY();
+                double x = v.getX();
+                double y = v.getY();
+                double shapeSize = v.getSize();
                 switch (v.getType()) {
-                    case 'C':
-                        pw.println("  <circle id=\"" + v + "\" cx=\"" + x + "\" cy=\"" + y + "\" r=\"" + 25 + "\" stroke=\"black\" stroke-width=\"0\" fill=\"" + v.getColor() + "\" />");
+                    case 0: // circle
+                        pw.println("  <circle id=\"" + v + "\" cx=\"" + x + "\" cy=\"" + y + "\" r=\"" + shapeSize + "\" stroke=\"black\" stroke-width=\"0\" fill=\"" + v.getColorHex() + "\" />");
                         break;
-                    case 'Q':
-                        pw.println("  <rect id=\"" + v + "\" x=\"" + (x-25) + "\" y=\"" + (y-25) + "\" width=\"" + 50 + "\" height=\"" + 50 + "\" style=\"fill:" + v.getColor() + "\" />");
+                    case 1: // square
+                        pw.println("  <rect id=\"" + v + "\" x=\"" + (x-shapeSize) + "\" y=\"" + (y-shapeSize) + "\" width=\"" + (shapeSize*2) + "\" height=\"" + (shapeSize*2) + "\" style=\"fill:" + v.getColorHex() + "\" />");
                         break;
-                    case 'T':
-                        pw.println("  <polygon id=\"" + v + "\" points=\"" + (x-25) + ',' + (y+25) + ' ' + (x+25) + ',' + (y+25) + ' ' + (x) + ',' + (y-25) + "\" style=\"fill:" + v.getColor() + "\" />");
+                    case 2: // triangle
+                        pw.println("  <polygon id=\"" + v + "\" points=\"" + (x-shapeSize) + ',' + (y+shapeSize) + ' ' + (x+shapeSize) + ',' + (y+shapeSize) + ' ' + (x) + ',' + (y-shapeSize) + "\" style=\"fill:" + v.getColorHex() + "\" />");
                 }
             }
 
@@ -102,5 +120,6 @@ public class Graph {
     public void reset() {
         vertices.clear();
         edges.clear();
+        intersections = 0;
     }
 }
