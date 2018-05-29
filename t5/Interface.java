@@ -17,7 +17,6 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.stage.StageStyle;
 
 public class Interface {
     private String btnStyle, menuStyle;
