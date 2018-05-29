@@ -5,6 +5,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.Scene;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 /**
@@ -83,9 +84,9 @@ public class GraphEditor extends Application {
                 Vertex start = graph.findVertex(drawingEdge.getStartX(), drawingEdge.getStartY());
                 Edge edge = graph.addEdge(start, end, menuBar.getEdgeType(), menuBar.getCurrentColor());
                 if (edge == null) return; // se ja existe uma aresta nessa posicao
-                Line edgeLine = edge.getLine();
-                graphPane.getChildren().add(edgeLine);
-                edgeLine.toBack();
+                Shape line = edge.getLine();
+                graphPane.getChildren().add(line);
+                line.toBack();
             }
         });
     }
