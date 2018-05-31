@@ -6,21 +6,12 @@ import javafx.scene.shape.Shape;
 public class Edge {
     private Vertex start;
     private Vertex end;
-    private Color color;
-    private Boolean dotted;
+    private Line shape;
 
-    public Edge(Vertex start_, Vertex end_, int type_, Color color_) {
+    public Edge(Vertex start_, Vertex end_) {
         start = start_;
         end = end_;
-        dotted = (type_ == 1);
-        color = color_;
-    }
-
-    public Line getLine() {
-        Line line = new Line(start.getX(), start.getY(), end.getX(), end.getY());
-        if (dotted) line.getStrokeDashArray().addAll(25.0, 20.0, 5.0, 20.0);
-        line.setStroke(color);
-        return line;
+        shape = new Line(start.getX(), start.getY(), end.getX(), end.getY());
     }
 
     public Vertex getStart() {
@@ -31,31 +22,21 @@ public class Edge {
         return end;
     }
 
-    public Boolean dotted() {
-        return dotted;
+    public Line getLine() {
+        return shape;
     }
 
-    public String getColorHex() {
-        return String.format("#%02X%02X%02X", 
-            (int)(color.getRed() * 255),
-            (int)(color.getGreen() * 255),
-            (int)(color.getBlue() * 255));
-    }
-
-    public int numIntersections(ArrayList<Edge> edgeList) {
+    public int intersections(ArrayList<Edge> edgeList) {
         int cont = 0;
         for (Edge e : edgeList) {
-            if (start == e.getStart() || start == e.getEnd() || end == e.getStart() || end == e.getEnd())
-                continue; // ignora colisoes nos vertices
-            Shape intersect = Shape.intersect(this.getFullLine(), e.getFullLine());
+            if (e.getStart() == start || e.getEnd() == start || e.getStart() == end || e.getEnd() == end)
+                continue;
+            Shape intersect = Shape.intersect(shape, e.getLine());
             if (intersect.getBoundsInLocal().getWidth() != -1) {
                 cont++;
             }
         }
+        shape.setStroke( (cont == 0) ? Color.BLACK : Color.RED );
         return cont;
-    }
-
-    private Line getFullLine() {
-        return new Line(start.getX(), start.getY(), end.getX(), end.getY());
     }
 }
