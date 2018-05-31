@@ -13,6 +13,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -20,24 +21,18 @@ import javafx.scene.paint.Color;
 import javafx.stage.StageStyle;
 
 public class Interface {
-    private String btnStyle, menuStyle, titleStyle;
+    private String menuStyle, titleStyle, infoStyle;
     private ArrayList<Button> btn;
+    private Label info;
+    private int level;
 
     public Interface() {
-        btnStyle = "-fx-font: 16px Georgia; -fx-padding: 7 20px 7px 20px; -fx-border-radius: 20;";
         menuStyle = "-fx-background-color: linear-gradient(#3c3c3c, #000000); -fx-padding: 10.0;";
-        titleStyle = "-fx-background-color: linear-gradient(#999999, #e6e6e6); -fx-padding: 10.0;";
+        titleStyle = "-fx-background-color: linear-gradient(#999999, #e6e6e6); -fx-padding: 40.0;";
+        infoStyle = "-fx-font: 20px Verdana; -fx-text-fill: #666666;";
         btn = new ArrayList<Button>();
-    }
-
-    public HBox getTop(String name) {
-        Label label = new Label(name);
-        label.setStyle("-fx-font: 24px \"Georgia\"; -fx-text-fill: black");
-
-        HBox title = new HBox(label);
-        title.setAlignment(Pos.CENTER);
-        title.setStyle(titleStyle);
-        return title;
+        info = new Label();
+        level = 1;
     }
 
     public HBox getBottom() {
@@ -50,21 +45,30 @@ public class Interface {
         return menu;
     }
 
-    public Label getInfo(int level, double time, int intersections) {
-        Label label = new Label("Nivel " + level + '\n' + "Tempo " + getTimeString(time) + '\n' + intersections + " interseccoes restantes");
-        label.setStyle("-fx-font: 20px \"Verdana\"; -fx-text-fill: #666666;");
-        label.setTranslateX(10);
-        label.setTranslateY(620);
-        return label;
+    public Pane getPane(Pane pane) {
+        pane.getChildren().clear();
+        pane.getChildren().add(getTop("Planarity"));
+        info.setStyle(infoStyle);
+        info.setTranslateX(10);
+        info.setTranslateY(590);
+        pane.getChildren().add(info);
+        return pane;
     }
 
-    private String getTimeString(double time) {
-        return "45s";
+    public HBox getTop(String name) {
+        Label label = new Label(name);
+        label.setStyle("-fx-font: 26px \"Georgia\"; -fx-text-fill: black");
+
+        HBox title = new HBox(label);
+        title.setAlignment(Pos.CENTER);
+        title.setStyle(titleStyle);
+        title.setMinWidth(910);
+        return title;
     }
 
-    public void createButtons(Graph graph) {
-        btn.add(buttonShuffle(graph));
-        btn.add(buttonLevels());
+    public void createButtons(Planarity planarity) {
+        btn.add(buttonShuffle(planarity.getGraph()));
+        btn.add(buttonLevels(planarity));
         btn.add(buttonLeave());
     }
 
@@ -74,14 +78,30 @@ public class Interface {
         b.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 graph.shuffle();
+                refreshInfo(graph);
             }
         });
         return b;
     }
 
-    private Button buttonLevels() {
+    private Button buttonLevels(Planarity planarity) {
         Button b = new Button("    Niveis    ");
         b.setStyle("-fx-font: 20px Georgia; -fx-padding: 7 20px 7px 20px;");
+        b.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent e) {
+                ArrayList<String> choices = new ArrayList<String>();
+                for (int i = 1; i <= 10; i++)
+                    choices.add("Nivel " + i);
+                ChoiceDialog<String> dialog = new ChoiceDialog<>("Nivel 1", choices);
+                dialog.setTitle("Alterar dificuldade");
+                dialog.setHeaderText(null);
+                dialog.setContentText("Escolha uma fase:");
+
+                Optional<String> result = dialog.showAndWait();
+                if (result.isPresent())
+                    planarity.toLevel(Integer.parseInt(result.get().substring(6)));
+            }
+        });
         return b;
     }
 
@@ -102,5 +122,17 @@ public class Interface {
             }
         });
         return b;
+    }
+
+    public void refreshInfo(Graph graph) {
+        info.setText("Nivel " + level + '\n' + graph.getIntersections() + " arestas com interseccoes");
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level_) {
+        level = level_;
     }
 }
