@@ -17,9 +17,15 @@ public class Vertex {
         shape = new Circle(x_, y_, 16);
     }
 
+    public double getX() {
+        return x;
+    }
+
     public void setX(double x_) {
-        if (x_ < 16 )      x_ = 16;
-        else if (x_ > 894) x_ = 894;
+        if (x_ < 16 )
+            x_ = 16;
+        else if (x_ > 894)
+            x_ = 894;
 
         x = x_;
         shape.setCenterX(x_);
@@ -32,9 +38,15 @@ public class Vertex {
         }
     }
 
+    public double getY() {
+        return y;
+    }
+
     public void setY(double y_) {
-        if (y_ < 16 )      y_ = 16;
-        else if (y_ > 635) y_ = 635;
+        if (y_ < 16 )
+            y_ = 16;
+        else if (y_ > 635)
+            y_ = 635;
 
         y = y_;
         shape.setCenterY(y_);
@@ -51,15 +63,7 @@ public class Vertex {
         return shape;
     }
 
-    public double getX() {
-        return x;
-    }
-
-    public double getY() {
-        return y;
-    }
-
     public void insertEdge(Edge e) {
-    	connectedEdges.add(e);
+        connectedEdges.add(e);
     }
 }
