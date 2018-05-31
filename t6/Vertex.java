@@ -7,33 +7,47 @@ import javafx.scene.shape.Shape;
 
 public class Vertex {
     private double x, y;
-    private Color color;
-    private int type;
+    private ArrayList<Edge> connectedEdges;
+    private Circle shape;
 
-    // set the default shape size
-    private static final double size = 25;
-
-    public Vertex(double x_, double y_, int type_, Color color_) {
+    public Vertex(double x_, double y_) {
         x = x_;
         y = y_;
-        type = type_;
-        color = color_;
+        connectedEdges = new ArrayList<Edge>();
+        shape = new Circle(x_, y_, 16);
     }
 
-    public Shape getShape() {
-        Shape shape = null;
+    public void setX(double x_) {
+        if (x_ < 16 )      x_ = 16;
+        else if (x_ > 894) x_ = 894;
 
-        switch (type) {
-            case 1: // square
-                shape = new Rectangle(x-(size), y-(size), size*2, size*2);
-                break;
-            case 2: // triangle
-                shape = new Polygon(new double[]{x-(size), y+(size), x+(size), y+(size), x, y-(size)});
-                break;
-            default: // circle
-                shape = new Circle(x, y, (size));
+        x = x_;
+        shape.setCenterX(x_);
+
+        for (Edge e : connectedEdges) {
+            if (e.getStart() == this)
+                e.getLine().setStartX(x_);
+            else
+                e.getLine().setEndX(x_);
         }
-        shape.setFill(color);
+    }
+
+    public void setY(double y_) {
+        if (y_ < 16 )      y_ = 16;
+        else if (y_ > 635) y_ = 635;
+
+        y = y_;
+        shape.setCenterY(y_);
+
+        for (Edge e : connectedEdges) {
+            if (e.getStart() == this)
+                e.getLine().setStartY(y_);
+            else
+                e.getLine().setEndY(y_);
+        }
+    }
+
+    public Circle getCircle() {
         return shape;
     }
 
@@ -45,28 +59,7 @@ public class Vertex {
         return y;
     }
 
-    public int getType() {
-        return type;
-    }
-
-    public double getSize() {
-        return size;
-    }
-
-    public String getColorHex() {
-        return String.format("#%02X%02X%02X", 
-            (int)(color.getRed() * 255),
-            (int)(color.getGreen() * 255),
-            (int)(color.getBlue() * 255));
-    }
-
-    public Boolean vertexCollision(ArrayList<Vertex> vertexList) {
-        for (Vertex v : vertexList) {
-            Shape intersect = Shape.intersect(this.getShape(), v.getShape());
-            if (intersect.getBoundsInLocal().getWidth() != -1) {
-                return true;
-            }
-        }
-        return false;
+    public void insertEdge(Edge e) {
+    	connectedEdges.add(e);
     }
 }
