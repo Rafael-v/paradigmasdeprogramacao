@@ -26,17 +26,21 @@ public class Edge {
         return shape;
     }
 
-    public int intersections(ArrayList<Edge> edgeList) {
-        int cont = 0;
+    public void setColor(Color c) {
+        shape.setStroke(c);
+    }
+
+    public int checkIntersection(ArrayList<Edge> edgeList) {
         for (Edge e : edgeList) {
             if (e.getStart() == start || e.getEnd() == start || e.getStart() == end || e.getEnd() == end)
                 continue;
             Shape intersect = Shape.intersect(shape, e.getLine());
             if (intersect.getBoundsInLocal().getWidth() != -1) {
-                cont++;
+                this.setColor(Color.RED);
+                return 1;
             }
         }
-        shape.setStroke( (cont == 0) ? Color.BLACK : Color.RED );
-        return cont;
+        this.setColor(Color.BLACK);
+        return 0;
     }
 }
