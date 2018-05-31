@@ -42,31 +42,29 @@ import javafx.scene.text.TextAlignment;
  */
 public class Planarity extends Application {
 
-    private Graph graph;
+    private Interface menu;
     private GraphGenerator graphGenerator;
-    private int level;
+    private Pane graphPane;
+    private Graph graph;
     private Vertex vertexPressed;
-    private Label info;
 
     public Planarity() {
-        graph = null;
-        vertexPressed = null;
+        menu = new Interface();
         graphGenerator = new GraphGenerator();
-        level = 0;
-        info = new Label();
+        graphPane = new Pane();
+        graphPane.setStyle("-fx-background-color: #e6e6e6;");
+        vertexPressed = null;
+        graph = null;
     }
 
     @Override
     public void start(Stage stage) {
         BorderPane borderPane = new BorderPane();
-        Interface menu = new Interface();
-        Pane graphPane = new Pane();
-        graphPane.setStyle("-fx-background-color: #e6e6e6;");
 
-        setMouseActions(graphPane, menu);
-        nextLevel(graphPane, menu);
+        setMouseActions();
+        toLevel(1);
 
-        menu.createButtons(graph);
+        menu.createButtons(this);
         borderPane.setCenter(graphPane);
         borderPane.setBottom(menu.getBottom());
 
@@ -77,7 +75,7 @@ public class Planarity extends Application {
         stage.show();
     }
 
-    private void setMouseActions(Pane graphPane, Interface menu) {
+    private void setMouseActions() {
         graphPane.setOnMousePressed(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent e) {
                 vertexPressed = graph.findVertex(e.getX(), e.getY());
@@ -90,30 +88,48 @@ public class Planarity extends Application {
                     return;
                 vertexPressed.setX(e.getX());
                 vertexPressed.setY(e.getY());
-                int intersections = graph.checkIntersections();
-                info.setText("Nivel " + level + '\n' + "Tempo " + 40.2 + '\n' + intersections + " interseccoes restantes");
+                menu.refreshInfo(graph);
             }
         });
 
         graphPane.setOnMouseReleased(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent e) {
                 vertexPressed = null;
+                checkLevelComplete();
             }
         });
     }
 
-    private void nextLevel(Pane graphPane, Interface menu) {
-        menu.setLevel(++level);
+    public void toLevel(int level) {
         graph = graphGenerator.newPlanarGraph(level);
-        graphPane = menu.getPane(graphPane, info);
+        graphPane = menu.getPane(graphPane);
 
         for (Edge e : graph.edges)
             graphPane.getChildren().add(e.getLine());
         for (Vertex v : graph.vertices)
             graphPane.getChildren().add(v.getCircle());
 
+        menu.setLevel(level);
         graph.shuffle();
-        info.setText("Nivel " + level + '\n' + "Tempo " + 40.2 + '\n' + graph.checkIntersections() + " interseccoes restantes");
+        menu.refreshInfo(graph);
+    }
+
+    private void checkLevelComplete() {
+        if (graph.getIntersections() != 0)
+            return;
+
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Objetivo atingido");
+        alert.setHeaderText(null);
+        alert.setContentText("Parabens! Nivel " + menu.getLevel() + " concluido\n" + "Continue para proxima fase...");
+        alert.showAndWait();
+
+        toLevel(menu.getLevel()+1);
+    }
+
+
+    public Graph getGraph() {
+        return graph;
     }
 
     public static void main(String[] args) {
