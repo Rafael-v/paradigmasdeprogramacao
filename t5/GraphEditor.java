@@ -38,7 +38,7 @@ public class GraphEditor extends Application {
 
         setMouseActions(graphPane, menuBar);
 
-        Scene scene = new Scene(borderPane, 700, 800);
+        Scene scene = new Scene(borderPane, 1000, 800);
         stage.setScene(scene);
         stage.setTitle("Editor de Grafos");
         stage.show();
@@ -57,7 +57,9 @@ public class GraphEditor extends Application {
                     if (start == null) return; // se nao ha vertice na posicao clicada
 
                     drawingEdge = new Line(start.getX(), start.getY(), e.getX(), e.getY());
-                    if (menuBar.getEdgeType() == 1) drawingEdge.getStrokeDashArray().addAll(25.0, 20.0, 5.0, 20.0);
+
+                    if (menuBar.getEdgeType() == 1) // se linha tracejada
+                        drawingEdge.getStrokeDashArray().addAll(25.0, 20.0, 5.0, 20.0);
                     drawingEdge.setStroke(menuBar.getCurrentColor());
 
                     graphPane.getChildren().add(drawingEdge);
