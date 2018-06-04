@@ -42,17 +42,19 @@ public class Edge {
     }
 
     public String getColorHex() {
-        return String.format("#%02X%02X%02X", 
-            (int)(color.getRed() * 255),
-            (int)(color.getGreen() * 255),
-            (int)(color.getBlue() * 255));
+        return String.format("#%02X%02X%02X", (int)(color.getRed() * 255), (int)(color.getGreen() * 255), (int)(color.getBlue() * 255));
     }
 
     public int numIntersections(ArrayList<Edge> edgeList) {
         int cont = 0;
         for (Edge e : edgeList) {
             if (this == e) continue;
+            
+            // Use a proxima linha para considerar colisao uma aresta tracejada que cruza por outra mas nao a encosta (passa pelo buraco da tracejada)
             Shape intersect = Shape.intersect(this.getFullLine(), e.getFullLine());
+            // Use a proxima linha para NAO considerar colisao uma aresta tracejada que cruza por outra mas nao a encosta
+            //Shape intersect = Shape.intersect(this.getLine(), e.getLine());
+
             if (intersect.getBoundsInLocal().getWidth() != -1) {
                 cont++;
             }
