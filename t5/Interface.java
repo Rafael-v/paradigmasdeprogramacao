@@ -94,7 +94,6 @@ public class Interface {
                     vertexType = Arrays.asList(options).indexOf(cb.getValue().toString());
                 else
                     edgeType = Arrays.asList(options).indexOf(cb.getValue().toString());
-                selected = type;
             }
         });
         return cb;
