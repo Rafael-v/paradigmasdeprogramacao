@@ -54,10 +54,7 @@ public class Vertex {
     }
 
     public String getColorHex() {
-        return String.format("#%02X%02X%02X", 
-            (int)(color.getRed() * 255),
-            (int)(color.getGreen() * 255),
-            (int)(color.getBlue() * 255));
+        return String.format("#%02X%02X%02X", (int)(color.getRed() * 255), (int)(color.getGreen() * 255), (int)(color.getBlue() * 255));
     }
 
     public Boolean vertexCollision(ArrayList<Vertex> vertexList) {
