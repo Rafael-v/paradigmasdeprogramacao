@@ -38,7 +38,7 @@ public class GraphEditor extends Application {
 
         setMouseActions(graphPane, menuBar);
 
-        Scene scene = new Scene(borderPane, 1000, 800);
+        Scene scene = new Scene(borderPane, 1000, 700);
         stage.setScene(scene);
         stage.setTitle("Editor de Grafos");
         stage.show();
