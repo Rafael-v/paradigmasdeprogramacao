@@ -1,7 +1,5 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -9,16 +7,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ColorPicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ChoiceDialog;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.stage.StageStyle;
 
 public class Interface {
     private String menuStyle, titleStyle, infoStyle;
@@ -45,14 +37,19 @@ public class Interface {
         return menu;
     }
 
-    public Pane getPane(Pane pane) {
+    public void refreshPane(Pane pane, Graph graph) {
         pane.getChildren().clear();
+        pane.setStyle("-fx-background-color: #e6e6e6;");
         pane.getChildren().add(getTop("Planarity"));
         info.setStyle(infoStyle);
         info.setTranslateX(10);
         info.setTranslateY(590);
         pane.getChildren().add(info);
-        return pane;
+        refreshInfo(graph);
+        for (Edge e : graph.edges)
+            pane.getChildren().add(e.getLine());
+        for (Vertex v : graph.vertices)
+            pane.getChildren().add(v.getCircle());
     }
 
     public HBox getTop(String name) {
@@ -67,18 +64,21 @@ public class Interface {
     }
 
     public void createButtons(Planarity planarity) {
-        btn.add(buttonShuffle(planarity.getGraph()));
+        btn.add(buttonShuffle(planarity));
         btn.add(buttonLevels(planarity));
         btn.add(buttonLeave());
     }
 
-    private Button buttonShuffle(Graph graph) {
+    private Button buttonShuffle(Planarity planarity) {
         Button b = new Button(" Misturar ");
         b.setStyle("-fx-font: 16px Georgia; -fx-padding: 7 20px 7px 20px;");
         b.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
-                graph.shuffle();
-                refreshInfo(graph);
+                Graph g = planarity.getGraph();
+                do {
+                    g.shuffle();
+                } while (g.getIntersections() == 0);
+                refreshInfo(g);
             }
         });
         return b;
@@ -90,9 +90,9 @@ public class Interface {
         b.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
                 ArrayList<String> choices = new ArrayList<String>();
-                for (int i = 1; i <= 10; i++)
+                for (int i = 1; i <= 30; i++)
                     choices.add("Nivel " + i);
-                ChoiceDialog<String> dialog = new ChoiceDialog<>("Nivel 1", choices);
+                ChoiceDialog<String> dialog = new ChoiceDialog<>("Nivel " + level, choices);
                 dialog.setTitle("Alterar dificuldade");
                 dialog.setHeaderText(null);
                 dialog.setContentText("Escolha uma fase:");
