@@ -1,40 +1,12 @@
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.Scene;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Optional;
-import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.shape.Shape;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.Tooltip;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import java.util.ArrayList;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.stage.StageStyle;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.Image;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.shape.Circle;
-import javafx.scene.text.TextAlignment;
 
 /**
  *
@@ -47,22 +19,21 @@ public class Planarity extends Application {
     private Pane graphPane;
     private Graph graph;
     private Vertex vertexPressed;
+    private long startTime;
 
     public Planarity() {
         menu = new Interface();
         graphGenerator = new GraphGenerator();
         graphPane = new Pane();
-        graphPane.setStyle("-fx-background-color: #e6e6e6;");
         vertexPressed = null;
-        graph = null;
     }
 
     @Override
     public void start(Stage stage) {
         BorderPane borderPane = new BorderPane();
 
-        setMouseActions();
         toLevel(1);
+        setMouseActions();
 
         menu.createButtons(this);
         borderPane.setCenter(graphPane);
@@ -102,16 +73,9 @@ public class Planarity extends Application {
 
     public void toLevel(int level) {
         graph = graphGenerator.newPlanarGraph(level);
-        graphPane = menu.getPane(graphPane);
-
-        for (Edge e : graph.edges)
-            graphPane.getChildren().add(e.getLine());
-        for (Vertex v : graph.vertices)
-            graphPane.getChildren().add(v.getCircle());
-
+        startTime = System.currentTimeMillis();
         menu.setLevel(level);
-        graph.shuffle();
-        menu.refreshInfo(graph);
+        menu.refreshPane(graphPane, graph);
     }
 
     private void checkLevelComplete() {
@@ -121,7 +85,7 @@ public class Planarity extends Application {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Objetivo atingido");
         alert.setHeaderText(null);
-        alert.setContentText("Parabens! Nivel " + menu.getLevel() + " concluido\n" + "Continue para proxima fase...");
+        alert.setContentText("Parabens! Nivel " + menu.getLevel() + " concluido em " + ((System.currentTimeMillis() - startTime)/1000) + "s\n" + "Continue para proxima fase...");
         alert.showAndWait();
 
         toLevel(menu.getLevel()+1);
