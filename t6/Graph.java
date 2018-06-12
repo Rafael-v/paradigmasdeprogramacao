@@ -1,14 +1,7 @@
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Scanner;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
-import javafx.scene.layout.Pane;
 import java.util.Random;
 
 public class Graph {
@@ -24,6 +17,10 @@ public class Graph {
         Vertex v = new Vertex(x, y);
         vertices.add(v);
         return v;
+    }
+
+    public Vertex addVertex() {
+        return addVertex(0.0, 0.0);
     }
 
     public Edge addEdge(Vertex start, Vertex end) {
