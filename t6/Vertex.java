@@ -1,9 +1,5 @@
 import java.util.ArrayList;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polygon;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 
 public class Vertex {
     private double x, y;
