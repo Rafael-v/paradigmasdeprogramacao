@@ -10,8 +10,12 @@ public class GraphGenerator {
         graph.shuffle();
 
         ArrayList<Vertex> vertices = graph.getVertices();
+        
+        // inicia o grafo: um triangulo a partir dos 3 primeiros vertices (da esquerda pra direita)
         double posX = firstSegment(graph);
 
+        // conecta os proximos vertices, um por vez, a todos os vertices (que consigam ser conectados
+        // sem que gere uma interseccao) do grafo
         do {
             next = nextVertex(graph, posX);
             if (next == null) continue;
@@ -26,6 +30,7 @@ public class GraphGenerator {
             }
         } while (next != null);
 
+        // depois de gerado o grafo sem interseccoes, embaralha ele
         do {
             graph.shuffle();
         } while (graph.getIntersections() == 0);
