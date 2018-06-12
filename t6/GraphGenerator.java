@@ -1,22 +1,19 @@
 import java.util.ArrayList;
 
 public class GraphGenerator {
-    private Graph graph;
-
     public Graph newPlanarGraph(int level) {
-        graph = new Graph();
-        ArrayList<Vertex> vertices = null;
+        Graph graph = new Graph();
         Vertex next; Edge e;
 
         for (int i = 0; i < totalVertex(level); i++) 
             graph.addVertex();
         graph.shuffle();
 
-        vertices = graph.getVertices();
-        double posX = firstSegment();
+        ArrayList<Vertex> vertices = graph.getVertices();
+        double posX = firstSegment(graph);
 
         do {
-            next = nextVertex(posX);
+            next = nextVertex(graph, posX);
             if (next == null) continue;
             for (Vertex v : vertices) {
                 if (v.getX() >= posX)
@@ -29,13 +26,17 @@ public class GraphGenerator {
             }
         } while (next != null);
 
+        do {
+            graph.shuffle();
+        } while (graph.getIntersections() == 0);
+
         return graph;
     }
 
-    private double firstSegment() {
-        Vertex a = nextVertex(0.0);
-        Vertex b = nextVertex(a.getX());
-        Vertex c = nextVertex(b.getX());
+    private double firstSegment(Graph graph) {
+        Vertex a = nextVertex(graph, 0.0);
+        Vertex b = nextVertex(graph, a.getX());
+        Vertex c = nextVertex(graph, b.getX());
         graph.addEdge(a, b);
         graph.addEdge(b, c);
         graph.addEdge(c, a);
@@ -43,7 +44,7 @@ public class GraphGenerator {
         return c.getX();
     }
 
-    private Vertex nextVertex(double posX) {
+    private Vertex nextVertex(Graph graph, double posX) {
         ArrayList<Vertex> vertices = graph.getVertices();
         Vertex next = null;
         for (Vertex v : vertices) {
@@ -58,6 +59,6 @@ public class GraphGenerator {
     }
 
     private int totalVertex(int level) {
-        return (level + 4);
+        return (level + 5);
     }
 }
