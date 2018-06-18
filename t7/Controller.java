@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.text.Font;
+import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 public class Controller {
@@ -52,8 +53,8 @@ public class Controller {
         bar.getData().add(barras);
     }
 
-    public void atualizaWebView(WebView browser) {
-
+    public void atualizaWebView(WebView browser, double latitude, double longitude) {
+        browser.getEngine().load("https://maps.googleapis.com/maps/api/staticmap?size=400x625&zoom=16&maptype=roadmap&markers=icon:https://goo.gl/xpmPM1%7C" + latitude + "," + longitude);
     }
 
     public Button getTodasPosicoesButton(TableView<Dado> table, PieChart pie, BarChart bar, ArrayList<Label> labels) {
