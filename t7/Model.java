@@ -15,23 +15,14 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 public class Model {
-    private HttpJSONService http = new HttpJSONService();
-    private ArrayList<Dado> dados = new ArrayList<>();
+    private final HttpJSONService http = new HttpJSONService();
+    private final ArrayList<Dado> dados = new ArrayList<>();
     private String dataUltimaLeitura = "Sem registros";
 
-    public void obterTodasPosicoes() {
-        inserirDados(getJson("http://dadosabertos.rio.rj.gov.br/apiTransporte/apresentacao/rest/index.cfm/obterTodasPosicoes"));
-    }
-
-    public void obterPosicoesDaLinha(int linha) {
-        inserirDados(getJson("http://dadosabertos.rio.rj.gov.br/apiTransporte/apresentacao/rest/index.cfm/obterPosicoesDaLinha/" + linha));
-    }
-
-    public void obterPosicoesDoOnibus(String ordem) {
-        inserirDados(getJson("http://dadosabertos.rio.rj.gov.br/apiTransporte/apresentacao/rest/index.cfm/obterPosicoesDoOnibus/" + ordem));
-    }
-
-    public void obterPorArquivo(String nomeArq) {
+    public ArrayList<Dado> obterDados(String url) {
+        dados.clear();
+        inserirDados(getJson(url));
+        return dados;
     }
 
     public int getTotalVeiculos() {
@@ -55,9 +46,9 @@ public class Model {
         if (dados.isEmpty())
             return "Sem registros";
         String menosRecente = dados.get(0).getData();
-        for (int i = 1; i < dados.size(); i++) {
-            if (dataMenor(dados.get(i).getData(), menosRecente))
-                menosRecente = dados.get(i).getData();
+        for (Dado d : dados) {
+            if (dataMenor(d.getData(), menosRecente))
+                menosRecente = d.getData();
         }
         return menosRecente;
     }
@@ -66,37 +57,36 @@ public class Model {
         if (dados.isEmpty())
             return "Sem registros";
         String maisRecente = dados.get(0).getData();
-        for (int i = 1; i < dados.size(); i++) {
-            if (dataMenor(maisRecente, dados.get(i).getData()))
-                maisRecente = dados.get(i).getData();
+        for (Dado d : dados) {
+            if (dataMenor(maisRecente, d.getData()))
+                maisRecente = d.getData();
         }
         return maisRecente;
     }
 
-    public ArrayList getLinhas() {
-        ArrayList linhas = new ArrayList();
+    public ArrayList<String> getLinhas() {
+        ArrayList<String> linhas = new ArrayList<>();
         for (Dado d : dados) {
             if (!linhas.contains(d.getLinha()))
                 linhas.add(d.getLinha());
         }
+        linhas.remove(""); // remove linha vazia (definida para onibus sem linha)
         return linhas;
     }
 
-    public int getVeiculosMovimentoNaLinha(int linha) {
-        int movimento = 0;
+    public int getVeiculosMovimentoNaLinha(String linha) {
+        int emMovimento = 0;
         for (Dado d : dados) {
-            if (d.getLinha() == linha && d.getVelocidade() != 0.0)
-                movimento++;
+            if (d.getLinha().equals(linha) && d.getVelocidade() != 0.0)
+                emMovimento++;
         }
-        return movimento;
+        return emMovimento;
     }
 
     private void inserirDados(Map obj) {
-        List listaDados = (List)obj.get("DATA");
-        ArrayList<List> dado = new ArrayList<>();
-        for (int i = 0; i < listaDados.size(); i++) {
-            dados.add(new Dado((List)listaDados.get(i)));
-        }
+        if (obj == null) return;
+        for (Object l : (List)obj.get("DATA"))
+            dados.add(new Dado((List)l));
         dataUltimaLeitura = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
     }
 
@@ -105,8 +95,9 @@ public class Model {
         try {
             json = http.sendGet(url);
         } catch (Exception e) {
-            System.out.println(e);
-            System.out.println("Nao foi possivel conectar ao servidor. Verifique sua conexao e tente novamente.");
+            System.out.println("\nNao foi possivel conectar ao servidor.");
+            System.out.println("Verifique sua conexao e tente novamente ou insira os dados via arquivo de texto.");
+            System.out.println("(" + e + ")");
         }
         return json;
     }
@@ -117,7 +108,7 @@ public class Model {
             if (format.parse(d1).before(format.parse(d2)))
                 return true;
         } catch (ParseException e) {
-            System.out.println(e);
+            System.out.println("(" + e + ")");
         }
         return false;
     }
@@ -125,7 +116,7 @@ public class Model {
 
 class HttpJSONService {
     private final String USER_AGENT = "Mozilla/5.0";
-    private JSONParsing engine = new JSONParsing();
+    private final JSONParsing engine = new JSONParsing();
     
     // HTTP GET request
     public Map sendGet(String url) throws Exception {
@@ -160,7 +151,7 @@ class HttpJSONService {
 }
 
 class JSONParsing {
-    private ScriptEngine engine;
+    private final ScriptEngine engine;
   
     public JSONParsing() {
         ScriptEngineManager sem = new ScriptEngineManager();
