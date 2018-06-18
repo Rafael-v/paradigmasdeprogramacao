@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -11,20 +12,23 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.util.Callback;
 
 /**
  *
  * @author Rafael Vales
  */
-public class View extends Application {
+public class Monitoramento extends Application {
     private final Controller controller = new Controller();
     private ArrayList<Label> labelsDates;
     private TableView<Dado> table;
@@ -74,6 +78,7 @@ public class View extends Application {
         borderPane.setRight(vbRight);
 
         Scene scene = new Scene(borderPane, 1350, 650);
+        stage.setTitle("Rafael Vales");
         stage.setScene(scene);
         stage.show();
     }
@@ -111,17 +116,41 @@ public class View extends Application {
         controller.atualizaBarChart(bar);
     }
     
-    private WebView initWebView() {
+    private void initWebView() {
         browser = new WebView();
-        WebEngine webEngine = browser.getEngine();
         browser.setPrefWidth(400);
         browser.setPrefHeight(625);
-        webEngine.load("https://maps.googleapis.com/maps/api/staticmap?size=400x625&maptype=roadmap&markers=color:blue%7Clabel:S%7C-22.839769,-43.282219");
-        return browser;
+        browser.getEngine().load("https://maps.googleapis.com/maps/api/staticmap?center=Rio+de+Janeiro,RJ,Brazil&size=400x625&zoom=10&maptype=roadmap");
     }
 
+    @SuppressWarnings("unchecked")
     private void initTableView() {
         table = new TableView<>();
+
+        // Checa a linha clicada e atualiza as coordenadas do mapa
+        // eu odeio unchecked warning
+        Callback<TableColumn<Dado,String>,TableCell<Dado,String>> cellFactory = new Callback<TableColumn<Dado,String>,TableCell<Dado,String>>() {
+            @Override
+            public TableCell<Dado,String> call(TableColumn p) {
+                TableCell<Dado,String> cell = new TableCell<Dado,String>() {
+                    @Override
+                    public void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        setText((item == null || empty) ? "" : getItem());
+                    }
+                };
+
+                cell.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                    public void handle(MouseEvent t) {
+                        int id = ((TableCell)t.getSource()).getIndex();
+                        controller.atualizaWebView(browser,
+                            table.getItems().get(id).getLatitude(),
+                            table.getItems().get(id).getLongitude());
+                    }
+                });
+                return cell;
+            }
+        };
 
         TableColumn<Dado,String> dataCol = new TableColumn<>("Data");
         dataCol.setCellValueFactory(cellData -> cellData.getValue().dataProperty());
@@ -152,6 +181,9 @@ public class View extends Application {
         velocidadeCol.setCellValueFactory(cellData -> cellData.getValue().velocidadeProperty());
         velocidadeCol.setPrefWidth(80);
         table.getColumns().add(velocidadeCol);
+
+        for (TableColumn tc : table.getColumns())
+            tc.setCellFactory(cellFactory);
     }
 
     private VBox getVBox() {
@@ -173,4 +205,5 @@ public class View extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
 }
