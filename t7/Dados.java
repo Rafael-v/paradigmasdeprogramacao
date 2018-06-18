@@ -9,16 +9,23 @@ public class Dado {
     private final SimpleStringProperty longitude;  // Longitude do ônibus na coleta (GPS)
     private final SimpleStringProperty velocidade; // Velocidade do ônibus na hora do coleta do dado
 
-    public Dado(List d) {
-        this.data = new SimpleStringProperty((String)d.get(0));
-        this.ordem = new SimpleStringProperty((String)d.get(1));
-        this.linha = new SimpleStringProperty(String.valueOf(d.get(2)));
-        this.latitude = new SimpleStringProperty(String.valueOf(d.get(3)));
-        this.longitude = new SimpleStringProperty(String.valueOf(d.get(4)));
-        this.velocidade = new SimpleStringProperty(String.valueOf(d.get(5)));
+    private static final int DATAHORA = 0;
+    private static final int ORDEM = 1;
+    private static final int LINHA = 2;
+    private static final int LATITUDE = 3;
+    private static final int LONGITUDE = 4;
+    private static final int VELOCIDADE = 5;
+
+    public Dado(List dado) {
+        this.data = new SimpleStringProperty((String)dado.get(DATAHORA));
+        this.ordem = new SimpleStringProperty((String)dado.get(ORDEM));
+        this.linha = new SimpleStringProperty(String.valueOf(dado.get(LINHA)));
+        this.latitude = new SimpleStringProperty(String.valueOf(dado.get(LATITUDE)));
+        this.longitude = new SimpleStringProperty(String.valueOf(dado.get(LONGITUDE)));
+        this.velocidade = new SimpleStringProperty(String.valueOf(dado.get(VELOCIDADE)));
     }
 
-    /* DataHora */
+    // DataHora
     public SimpleStringProperty dataProperty() {
         return data;
     }
@@ -29,7 +36,7 @@ public class Dado {
         this.data.set(data);
     }
 
-    /* Ordem */
+    // Ordem
     public SimpleStringProperty ordemProperty() {
         return ordem;
     }
@@ -40,7 +47,7 @@ public class Dado {
         this.ordem.set(ordem);
     }
 
-    /* Linha */
+    // Linha
     public SimpleStringProperty linhaProperty() {
         return linha;
     }
@@ -51,7 +58,7 @@ public class Dado {
         this.linha.set(linha);
     }
 
-    /* Latitude */
+    // Latitude
     public SimpleStringProperty latitudeProperty() {
         return latitude;
     }
@@ -62,7 +69,7 @@ public class Dado {
         this.latitude.set(latitude);
     }
 
-    /* Longitude */
+    // Longitude
     public SimpleStringProperty longitudeProperty() {
         return longitude;
     }
@@ -73,7 +80,7 @@ public class Dado {
         this.longitude.set(longitude);
     }
 
-    /* Velocidade */
+    // Velocidade
     public SimpleStringProperty velocidadeProperty() {
         return velocidade;
     }
