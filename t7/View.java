@@ -1,132 +1,95 @@
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.scene.Group;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
-
-import javafx.scene.control.Button;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.scene.control.Separator;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import javafx.geometry.Pos;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableView;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.util.*;
-import javafx.scene.control.*;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.chart.*;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.io.IOException;
-import java.util.Map;
-import java.util.ArrayList;
-import java.util.List;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
+/**
+ *
+ * @author Rafael Vales
+ */
 public class View extends Application {
-    private Controller controller = new Controller();
-    private ArrayList<Label> textos;
-    private TableView<Dado> tabela;
+    private final Controller controller = new Controller();
+    private ArrayList<Label> labelsDates;
+    private TableView<Dado> table;
     private BarChart<String,Number> bar;
     private PieChart pie;
+    private WebView browser;
 
     @Override
     public void start(Stage stage) {
-        BorderPane borderPane = new BorderPane();
-
         initLabels();
         initTableView();
         initPieChart();
         initBarChart();
+        initWebView();
 
-        /*center*/
-        final Label title = new Label("  Monitoramento de frota de onibus\nurbano na cidade do Rio de Janeiro");
-        title.setFont(new Font("Arial", 22));
-        final VBox titleBox = new VBox();
-        titleBox.getChildren().add(title);
-        titleBox.setAlignment(Pos.CENTER);
+        // Pane esquerdo
+        VBox vbLeft = getVBox();
+        vbLeft.getChildren().addAll(pie, new Separator(), bar);
 
-        Button btn1 = controller.getTodasPosicoesButton(tabela, pie, bar, textos);
-        Button btn2 = controller.getPosicoesDaLinhaButton(tabela, pie, bar, textos);
-        Button btn3 = controller.getPosicoesDoOnibusButton(tabela, pie, bar, textos);
-        final HBox hboxButtons = new HBox();
-        hboxButtons.setSpacing(5);
-        hboxButtons.setPadding(new Insets(10, 10, 10, 10));
-        hboxButtons.getChildren().addAll(btn1, btn2, btn3);
-        hboxButtons.setAlignment(Pos.CENTER);
+        // Pane central
+        VBox vbCenter = getVBox();
 
-        final VBox vboxCenter = new VBox();
-        vboxCenter.setSpacing(5);
-        vboxCenter.setPadding(new Insets(10, 10, 10, 10));
-        vboxCenter.getChildren().addAll(titleBox, tabela, hboxButtons);
-        for (Label l : textos)
-            vboxCenter.getChildren().add(l);
+        final Label titulo = new Label("  Monitoramento de frota de onibus\nurbano na cidade do Rio de Janeiro");
+        titulo.setFont(new Font("Arial", 22));
+        VBox vbTitle = getVBox();
+        vbTitle.getChildren().addAll(titulo);
 
-        /*right*/
-        final VBox vboxRight = new VBox();
-        vboxRight.setSpacing(5);
-        vboxRight.setPadding(new Insets(10, 10, 10, 10));
-        vboxRight.getChildren().addAll(initWebView());
+        HBox hbButtons = getHBox();
+        hbButtons.getChildren().addAll(
+            controller.getTodasPosicoesButton(table, pie, bar, labelsDates),
+            controller.getPosicoesDaLinhaButton(table, pie, bar, labelsDates),
+            controller.getPosicoesDoOnibusButton(table, pie, bar, labelsDates));
 
-        /*left*/
-        final VBox vboxLeft = new VBox();
-        vboxLeft.setSpacing(5);
-        vboxLeft.setPadding(new Insets(10, 10, 10, 10));
-        vboxLeft.getChildren().addAll(pie, new Separator(), bar);
+        VBox vbDates = getVBox();
+        for (Label l : labelsDates)
+            vbDates.getChildren().add(l);
 
-        borderPane.setCenter(vboxCenter);
-        borderPane.setRight(vboxRight);
-        borderPane.setLeft(vboxLeft);
+        vbCenter.getChildren().addAll(vbTitle, table, hbButtons, new Separator(), vbDates);
+
+        // Pane direito
+        VBox vbRight = new VBox();
+        vbRight.getChildren().addAll(browser);
+
+        BorderPane borderPane = new BorderPane();
+        borderPane.setLeft(vbLeft);
+        borderPane.setCenter(vbCenter);
+        borderPane.setRight(vbRight);
 
         Scene scene = new Scene(borderPane, 1350, 650);
         stage.setScene(scene);
         stage.show();
     }
 
-    private WebView initWebView() {
-        WebView browser = new WebView();
-        WebEngine webEngine = browser.getEngine();
-        browser.setPrefWidth(400);
-        browser.setPrefHeight(400);
-        webEngine.load("https://maps.googleapis.com/maps/api/staticmap?size=400x400&maptype=roadmap&markers=color:blue%7Clabel:S%7C-22.839769,-43.282219");
-        return browser;
-    }
-
     private void initLabels() {
-        textos = new ArrayList<>();
-        textos.add(new Label("Ultima leitura de dados:\tSem registros"));
-        textos.add(new Label("Data mais recente:  \tSem registros"));
-        textos.add(new Label("Data menos recente: \tSem registros"));
-        for (Label l : textos)
+        labelsDates = new ArrayList<>();
+        labelsDates.add(new Label()); // Label ultima leitura de dados do servidor
+        labelsDates.add(new Label()); // Label data-hora mais recente lida do servidor
+        labelsDates.add(new Label()); // Label data-hora menos recente lida do servidor
+        for (Label l : labelsDates)
             l.setFont(new Font("Arial", 14));
+        controller.atualizaTextos(labelsDates);
     }
 
     private void initPieChart() {
         pie = new PieChart();
-        pie.setTitle("Situacao dos veiculos");
         pie.setPrefWidth(450);
         pie.setPrefHeight(325);
         controller.atualizaPieChart(pie);
@@ -138,48 +101,73 @@ public class View extends Application {
         xAxis.setLabel("Linha de onibus");       
         yAxis.setLabel("Qtd. de veiculos");
  
-        bar = new BarChart<String,Number>(xAxis,yAxis);
+        bar = new BarChart<>(xAxis,yAxis);
         bar.setTitle("Numero de veiculos em movimento por linha");
         bar.setPrefWidth(450);
         bar.setPrefHeight(325);
         bar.setLegendVisible(false);
-        bar.setBarGap(0.5);
-        bar.setCategoryGap(0.5);
+        //bar.setBarGap(0.5);
+        //bar.setCategoryGap(0.5);
         controller.atualizaBarChart(bar);
+    }
+    
+    private WebView initWebView() {
+        browser = new WebView();
+        WebEngine webEngine = browser.getEngine();
+        browser.setPrefWidth(400);
+        browser.setPrefHeight(625);
+        webEngine.load("https://maps.googleapis.com/maps/api/staticmap?size=400x625&maptype=roadmap&markers=color:blue%7Clabel:S%7C-22.839769,-43.282219");
+        return browser;
     }
 
     private void initTableView() {
-        tabela = new TableView<>();
+        table = new TableView<>();
 
-        TableColumn<Dado,String> dataCol = new TableColumn<Dado,String>("Data");
+        TableColumn<Dado,String> dataCol = new TableColumn<>("Data");
         dataCol.setCellValueFactory(cellData -> cellData.getValue().dataProperty());
         dataCol.setPrefWidth(115);
-        tabela.getColumns().add(dataCol);
+        table.getColumns().add(dataCol);
 
-        TableColumn<Dado,String> ordemCol = new TableColumn<Dado,String>("Ordem");
+        TableColumn<Dado,String> ordemCol = new TableColumn<>("Ordem");
         ordemCol.setCellValueFactory(cellData -> cellData.getValue().ordemProperty());
         ordemCol.setPrefWidth(54);
-        tabela.getColumns().add(ordemCol);
+        table.getColumns().add(ordemCol);
 
-        TableColumn<Dado,String> linhaCol = new TableColumn<Dado,String>("Linha");
+        TableColumn<Dado,String> linhaCol = new TableColumn<>("Linha");
         linhaCol.setCellValueFactory(cellData -> cellData.getValue().linhaProperty());
         linhaCol.setPrefWidth(50);
-        tabela.getColumns().add(linhaCol);
+        table.getColumns().add(linhaCol);
 
-        TableColumn<Dado,String> latitudeCol = new TableColumn<Dado,String>("Latitude");
+        TableColumn<Dado,String> latitudeCol = new TableColumn<>("Latitude");
         latitudeCol.setCellValueFactory(cellData -> cellData.getValue().latitudeProperty());
         latitudeCol.setPrefWidth(67);
-        tabela.getColumns().add(latitudeCol);
+        table.getColumns().add(latitudeCol);
 
-        TableColumn<Dado,String> longitudeCol = new TableColumn<Dado,String>("Longitude");
+        TableColumn<Dado,String> longitudeCol = new TableColumn<>("Longitude");
         longitudeCol.setCellValueFactory(cellData -> cellData.getValue().longitudeProperty());
         longitudeCol.setPrefWidth(73);
-        tabela.getColumns().add(longitudeCol);
+        table.getColumns().add(longitudeCol);
 
-        TableColumn<Dado,String> velocidadeCol = new TableColumn<Dado,String>("Velocidade");
+        TableColumn<Dado,String> velocidadeCol = new TableColumn<>("Velocidade");
         velocidadeCol.setCellValueFactory(cellData -> cellData.getValue().velocidadeProperty());
         velocidadeCol.setPrefWidth(80);
-        tabela.getColumns().add(velocidadeCol);
+        table.getColumns().add(velocidadeCol);
+    }
+
+    private VBox getVBox() {
+        VBox vb = new VBox();
+        vb.setSpacing(5);
+        vb.setPadding(new Insets(10, 10, 10, 10));
+        vb.setAlignment(Pos.CENTER);
+        return vb;
+    }
+
+    private HBox getHBox() {
+        HBox hb = new HBox();
+        hb.setSpacing(5);
+        hb.setPadding(new Insets(10, 10, 10, 10));
+        hb.setAlignment(Pos.CENTER);
+        return hb;
     }
 
     public static void main(String[] args) {
