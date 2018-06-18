@@ -16,11 +16,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.*;
+import javafx.scene.chart.*;
+import javafx.scene.input.MouseEvent;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -63,25 +66,37 @@ public class Controller {
         list.get(2).setText("Data menos recente: \t" + model.getDataMenosRecente());
     }
 
-    public Button getTodasPosicoesButton(TableView<Dado> table, ArrayList<Label> textos) {
+    public void atualizaPie(PieChart chart) {
+        int parados = model.getVeiculosParados();
+        int movimento = model.getTotalVeiculos() - parados;
+
+        ObservableList<PieChart.Data> pieChartData =
+                FXCollections.observableArrayList(
+                new PieChart.Data(parados + " parado(s)", parados),
+                new PieChart.Data(movimento + " em movimento", movimento));
+
+        chart.setData(pieChartData);
+    }
+
+    public Button getTodasPosicoesButton(TableView<Dado> table, PieChart chart, ArrayList<Label> textos) {
         Button btn = new Button("Obter todas posicoes");
     
         btn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                //table.getItems().clear();
                 ObservableList<Dado> observable = FXCollections.observableArrayList();
                 ArrayList<Dado> array = obterTodasPosicoes();
                 for (Dado d : array)
                     observable.add(d);
                 table.setItems(observable);
                 atualizaTextos(textos);
+                atualizaPie(chart);
             }
         });
 
         return btn;
     }
 
-    public Button getPosicoesDaLinhaButton(TableView<Dado> table, ArrayList<Label> textos) {
+    public Button getPosicoesDaLinhaButton(TableView<Dado> table, PieChart chart, ArrayList<Label> textos) {
         Button btn = new Button("Filtrar por linha");
     
         btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -93,13 +108,13 @@ public class Controller {
 
                 Optional<String> result = dialog.showAndWait();
                 if (result.isPresent()) {
-                    //table.getItems().clear();
                     ObservableList<Dado> observable = FXCollections.observableArrayList();
                     ArrayList<Dado> array = obterPosicoesDaLinha(result.get());
                     for (Dado d : array)
                         observable.add(d);
                     table.setItems(observable);
                     atualizaTextos(textos);
+                    atualizaPie(chart);
                 }
             }
         });
@@ -107,7 +122,7 @@ public class Controller {
         return btn;
     }
 
-    public Button getPosicoesDoOnibusButton(TableView<Dado> table, ArrayList<Label> textos) {
+    public Button getPosicoesDoOnibusButton(TableView<Dado> table, PieChart chart, ArrayList<Label> textos) {
         Button btn = new Button("Filtrar por onibus");
     
         btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -119,13 +134,13 @@ public class Controller {
 
                 Optional<String> result = dialog.showAndWait();
                 if (result.isPresent()) {
-                    //table.getItems().clear();
                     ObservableList<Dado> observable = FXCollections.observableArrayList();
                     ArrayList<Dado> array = obterPosicoesDoOnibus(result.get());
                     for (Dado d : array)
                         observable.add(d);
                     table.setItems(observable);
                     atualizaTextos(textos);
+                    atualizaPie(chart);
                 }
             }
         });
