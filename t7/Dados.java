@@ -1,20 +1,22 @@
+import java.util.List;
+
 public class Dado {
     private String data;       // Data e hora da coleta do dado
     private String ordem;      // Identificação alfanumérica do veículo
-    private double linha;      // Linha de transporte
+    private int linha;         // Linha de transporte
     private double latitude;   // Latitude do ônibus na coleta (GPS)
     private double longitude;  // Longitude do ônibus na coleta (GPS)
     private double velocidade; // Velocidade do ônibus na hora do coleta do dado
 
-    public Dado(String dat, String ord, double lin, double lat, double lon, double vel) {
-        this.data = dat;
-        this.ordem = ord;
-        this.linha = lin;
-        this.latitude = lat;
-        this.longitude = lon;
-        this.velocidade = vel;
+    public Dado(List d) {
+        this.data = (String)d.get(0);
+        this.ordem = (String)d.get(1);
+        this.linha = 0; //d.get(2);
+        this.latitude = (double)d.get(3);
+        this.longitude = (double)d.get(4);
+        this.velocidade = (double)d.get(5);
 
-        System.out.println("Dado adicionado: "+'['+dat+','+ord+','+lin+','+lat+','+lon+','+vel+']');
+        System.out.println("Novo dado: " + toString());
     }
 
     public String getData() {
@@ -33,11 +35,11 @@ public class Dado {
         this.ordem = ordem;
     }
     
-    public double getLinha() {
+    public int getLinha() {
         return this.linha;
     }
 
-    public void setLinha(double linha) {
+    public void setLinha(int linha) {
         this.linha = linha;
     }
     
