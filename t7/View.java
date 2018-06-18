@@ -21,6 +21,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.chart.*;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -42,29 +44,50 @@ import java.util.Calendar;
 
 public class View extends Application {
     private Controller controller = new Controller();
-    private TableView<Dado> tabela = new TableView<>();
     private ArrayList<Label> textos = new ArrayList<>();
+    private TableView<Dado> tabela = new TableView<>();
+    private PieChart chart = new PieChart();
 
     @Override
     public void start(Stage stage) {
-        final Label title = new Label("Monitoramento de frota de onibus urbanos da cidade de Rio de Janeiro");
-        title.setFont(new Font("Arial", 20));
+        BorderPane borderPane = new BorderPane();
 
         initLabels();
         initTable();
+        initPieChar();
 
-        Button btn1 = controller.getTodasPosicoesButton(tabela, textos);
-        Button btn2 = controller.getPosicoesDaLinhaButton(tabela, textos);
-        Button btn3 = controller.getPosicoesDoOnibusButton(tabela, textos);
+        /*center*/
+        final Label title = new Label("Monitoramento de frota de onibus urbano da cidade de Rio de Janeiro");
+        title.setFont(new Font("Arial", 20));
 
-        final VBox vbox = new VBox();
-        vbox.setSpacing(5);
-        vbox.setPadding(new Insets(10, 10, 10, 10));
-        vbox.getChildren().addAll(title, tabela, btn1, btn2, btn3);
+        Button btn1 = controller.getTodasPosicoesButton(tabela, chart, textos);
+        Button btn2 = controller.getPosicoesDaLinhaButton(tabela, chart, textos);
+        Button btn3 = controller.getPosicoesDoOnibusButton(tabela, chart, textos);
+
+        final VBox vboxCenter = new VBox();
+        vboxCenter.setSpacing(5);
+        vboxCenter.setPadding(new Insets(10, 10, 10, 10));
+        vboxCenter.getChildren().addAll(title, tabela, btn1, btn2, btn3);
         for (Label l : textos)
-            vbox.getChildren().add(l);
+            vboxCenter.getChildren().add(l);
 
-        Scene scene = new Scene(vbox);
+        /*right*/
+        final VBox vboxRight = new VBox();
+        vboxRight.setSpacing(5);
+        vboxRight.setPadding(new Insets(10, 10, 10, 10));
+        vboxRight.getChildren().addAll();
+
+        /*left*/
+        final VBox vboxLeft = new VBox();
+        vboxLeft.setSpacing(5);
+        vboxLeft.setPadding(new Insets(10, 10, 10, 10));
+        vboxLeft.getChildren().addAll(chart);
+
+        borderPane.setCenter(vboxCenter);
+        borderPane.setRight(vboxRight);
+        borderPane.setLeft(vboxLeft);
+
+        Scene scene = new Scene(borderPane, 1200, 700);
         stage.setScene(scene);
         stage.show();
     }
@@ -75,6 +98,12 @@ public class View extends Application {
         textos.add(new Label("Data menos recente: \tSem registros"));
         for (Label l : textos)
             l.setFont(new Font("Arial", 12));
+    }
+
+    private void initPieChar() {
+        chart.setTitle("Situacao dos veiculos");
+        chart.setPrefHeight(300);
+        controller.atualizaPie(chart);
     }
 
     private void initTable() {
