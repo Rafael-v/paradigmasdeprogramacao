@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.effect.DropShadow;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableCell;
@@ -66,7 +67,7 @@ public class Controller {
         list.get(2).setText("Data menos recente: \t" + model.getDataMenosRecente());
     }
 
-    public void atualizaPie(PieChart chart) {
+    public void atualizaPieChart(PieChart pie) {
         int parados = model.getVeiculosParados();
         int movimento = model.getTotalVeiculos() - parados;
 
@@ -75,12 +76,30 @@ public class Controller {
                 new PieChart.Data(parados + " parado(s)", parados),
                 new PieChart.Data(movimento + " em movimento", movimento));
 
-        chart.setData(pieChartData);
+        pie.setData(pieChartData);
     }
 
-    public Button getTodasPosicoesButton(TableView<Dado> table, PieChart chart, ArrayList<Label> textos) {
-        Button btn = new Button("Obter todas posicoes");
-    
+    public void atualizaBarChart(BarChart bar) {
+        XYChart.Series barras = new XYChart.Series();
+
+        ArrayList<String> linhas = model.getLinhas();
+        for (String l : linhas) {
+            int veiculos = model.getVeiculosMovimentoNaLinha(l);
+            if (veiculos > 0) {
+                barras.getData().add(new XYChart.Data(l, veiculos));
+            }
+        }
+
+        bar.getData().clear();
+        bar.getData().add(barras);
+    }
+
+    public Button getTodasPosicoesButton(TableView<Dado> table, PieChart pie, BarChart bar, ArrayList<Label> textos) {
+        Button btn = new Button("Obter todas linhas");
+
+        btn.setStyle("-fx-font: 14 arial; -fx-base: #b6e7c9;");
+
+        
         btn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 ObservableList<Dado> observable = FXCollections.observableArrayList();
@@ -89,15 +108,20 @@ public class Controller {
                     observable.add(d);
                 table.setItems(observable);
                 atualizaTextos(textos);
-                atualizaPie(chart);
+                atualizaPieChart(pie);
+                atualizaBarChart(bar);
+
+                for (TableColumn c : table.getColumns())
+                    System.out.println(c.getWidth());
             }
         });
 
         return btn;
     }
 
-    public Button getPosicoesDaLinhaButton(TableView<Dado> table, PieChart chart, ArrayList<Label> textos) {
+    public Button getPosicoesDaLinhaButton(TableView<Dado> table, PieChart pie, BarChart bar, ArrayList<Label> textos) {
         Button btn = new Button("Filtrar por linha");
+        btn.setStyle("-fx-font: 14 arial; -fx-base: #b6e7c9;");
     
         btn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
@@ -114,7 +138,8 @@ public class Controller {
                         observable.add(d);
                     table.setItems(observable);
                     atualizaTextos(textos);
-                    atualizaPie(chart);
+                    atualizaPieChart(pie);
+                    atualizaBarChart(bar);
                 }
             }
         });
@@ -122,8 +147,9 @@ public class Controller {
         return btn;
     }
 
-    public Button getPosicoesDoOnibusButton(TableView<Dado> table, PieChart chart, ArrayList<Label> textos) {
+    public Button getPosicoesDoOnibusButton(TableView<Dado> table, PieChart pie, BarChart bar, ArrayList<Label> textos) {
         Button btn = new Button("Filtrar por onibus");
+        btn.setStyle("-fx-font: 14 arial; -fx-base: #b6e7c9;");
     
         btn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
@@ -140,7 +166,8 @@ public class Controller {
                         observable.add(d);
                     table.setItems(observable);
                     atualizaTextos(textos);
-                    atualizaPie(chart);
+                    atualizaPieChart(pie);
+                    atualizaBarChart(bar);
                 }
             }
         });
