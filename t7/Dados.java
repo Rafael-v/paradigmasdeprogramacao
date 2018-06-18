@@ -1,69 +1,86 @@
 import java.util.List;
+import javafx.beans.property.SimpleStringProperty;
 
 public class Dado {
-    private String data;       // Data e hora da coleta do dado
-    private String ordem;      // Identificação alfanumérica do veículo
-    private int linha;         // Linha de transporte
-    private double latitude;   // Latitude do ônibus na coleta (GPS)
-    private double longitude;  // Longitude do ônibus na coleta (GPS)
-    private double velocidade; // Velocidade do ônibus na hora do coleta do dado
+    private final SimpleStringProperty data;       // Data e hora da coleta do dado
+    private final SimpleStringProperty ordem;      // Identificação alfanumérica do veículo
+    private final SimpleStringProperty linha;      // Linha de transporte
+    private final SimpleStringProperty latitude;   // Latitude do ônibus na coleta (GPS)
+    private final SimpleStringProperty longitude;  // Longitude do ônibus na coleta (GPS)
+    private final SimpleStringProperty velocidade; // Velocidade do ônibus na hora do coleta do dado
 
     public Dado(List d) {
-        this.data = (String)d.get(0);
-        this.ordem = (String)d.get(1);
-        this.linha = 0; //d.get(2);
-        this.latitude = (double)d.get(3);
-        this.longitude = (double)d.get(4);
-        this.velocidade = (double)d.get(5);
-
-        System.out.println("Novo dado: " + toString());
+        this.data = new SimpleStringProperty((String)d.get(0));
+        this.ordem = new SimpleStringProperty((String)d.get(1));
+        this.linha = new SimpleStringProperty(String.valueOf(d.get(2)));
+        this.latitude = new SimpleStringProperty(String.valueOf(d.get(3)));
+        this.longitude = new SimpleStringProperty(String.valueOf(d.get(4)));
+        this.velocidade = new SimpleStringProperty(String.valueOf(d.get(5)));
     }
 
+    /* DataHora */
+    public SimpleStringProperty dataProperty() {
+        return data;
+    }
     public String getData() {
-        return this.data;
+        return data.get();
     }
-
     public void setData(String data) {
-        this.data = data;
+        this.data.set(data);
     }
-    
+
+    /* Ordem */
+    public SimpleStringProperty ordemProperty() {
+        return ordem;
+    }
     public String getOrdem() {
-        return this.ordem;
+        return ordem.get();
     }
-
     public void setOrdem(String ordem) {
-        this.ordem = ordem;
-    }
-    
-    public int getLinha() {
-        return this.linha;
+        this.ordem.set(ordem);
     }
 
-    public void setLinha(int linha) {
-        this.linha = linha;
+    /* Linha */
+    public SimpleStringProperty linhaProperty() {
+        return linha;
     }
-    
+    public String getLinha() {
+        return linha.get();
+    }
+    public void setLinha(String linha) {
+        this.linha.set(linha);
+    }
+
+    /* Latitude */
+    public SimpleStringProperty latitudeProperty() {
+        return latitude;
+    }
     public double getLatitude() {
-        return this.latitude;
+        return Double.parseDouble(latitude.get());
+    }
+    public void setLatitude(String latitude) {
+        this.latitude.set(latitude);
     }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
+    /* Longitude */
+    public SimpleStringProperty longitudeProperty() {
+        return longitude;
     }
-    
     public double getLongitude() {
-        return this.longitude;
+        return Double.parseDouble(longitude.get());
+    }
+    public void setLongitude(String longitude) {
+        this.longitude.set(longitude);
     }
 
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
+    /* Velocidade */
+    public SimpleStringProperty velocidadeProperty() {
+        return velocidade;
     }
-
     public double getVelocidade() {
-        return this.velocidade;
+        return Double.parseDouble(velocidade.get());
     }
-
-    public void setVelocidade(double velocidade) {
-        this.velocidade = velocidade;
+    public void setVelocidade(String velocidade) {
+        this.velocidade.set(velocidade);
     }
 }
