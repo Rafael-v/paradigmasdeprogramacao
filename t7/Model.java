@@ -83,6 +83,26 @@ public class Model {
         return emMovimento;
     }
 
+    public String getEndereco(double lat, double lng) {
+        String url = "https://maps.googleapis.com/maps/api/geocode/json?address=" + lat + "," + lng + "&key=AIzaSyCMzST_dQwc1gbFvxFakpAt_YBAhSu5MuI";
+        Map obj = getJson(url);
+
+        if (obj != null) {
+            // se deu limite de acesso, tenta de novo
+            // (geralmente prox tentativa retorna ok)
+            if (obj.get("status") == "OVER_QUERY_LIMIT")
+                obj = getJson(url);
+            if (obj.get("status") == "OK") {
+                List l = (List)obj.get("results"); // lista de objetos
+                return (String)((Map)l.get(0)).get("formatted_address");
+            }
+            System.out.println("Error (" + obj.get("status") + ")");
+        }
+
+        System.out.print("Nao foi possivel encontrar o endereco solicitado. ");
+        return "Rio de Janeiro - RJ, Brasil";
+    }
+
     private void inserirDados(Map obj) {
         if (obj == null) return;
         for (Object l : (List)obj.get("DATA"))
