@@ -30,7 +30,7 @@ import javafx.util.Callback;
  */
 public class Monitoramento extends Application {
     private final Controller controller = new Controller();
-    private ArrayList<Label> labelsDates;
+    private ArrayList<Label> dates, andress;
     private TableView<Dado> table;
     private BarChart<String,Number> bar;
     private PieChart pie;
@@ -38,6 +38,7 @@ public class Monitoramento extends Application {
 
     @Override
     public void start(Stage stage) {
+        // Inicializacoes
         initLabels();
         initTableView();
         initPieChart();
@@ -49,54 +50,67 @@ public class Monitoramento extends Application {
         vbLeft.getChildren().addAll(pie, new Separator(), bar);
 
         // Pane central
-        VBox vbCenter = getVBox();
-
         final Label titulo = new Label("  Monitoramento de frota de onibus\nurbano na cidade do Rio de Janeiro");
         titulo.setFont(new Font("Arial", 22));
         VBox vbTitle = getVBox();
-        vbTitle.getChildren().addAll(titulo);
+        vbTitle.getChildren().add(titulo);
 
         HBox hbButtons = getHBox();
         hbButtons.getChildren().addAll(
-            controller.getTodasPosicoesButton(table, pie, bar, labelsDates),
-            controller.getPosicoesDaLinhaButton(table, pie, bar, labelsDates),
-            controller.getPosicoesDoOnibusButton(table, pie, bar, labelsDates));
+            controller.getTodasPosicoesButton(table, pie, bar, dates),
+            controller.getPosicoesDaLinhaButton(table, pie, bar, dates),
+            controller.getPosicoesDoOnibusButton(table, pie, bar, dates));
 
         VBox vbDates = getVBox();
-        for (Label l : labelsDates)
-            vbDates.getChildren().add(l);
+        vbDates.getChildren().addAll(dates);
 
+        VBox vbCenter = getVBox();
         vbCenter.getChildren().addAll(vbTitle, table, hbButtons, new Separator(), vbDates);
 
         // Pane direito
-        VBox vbRight = new VBox();
-        vbRight.getChildren().addAll(browser);
+        VBox vbEndereco = getVBox();
+        vbEndereco.getChildren().addAll(andress);
 
+        VBox vbRight = new VBox();
+        vbRight.getChildren().addAll(browser, vbEndereco);
+
+        // BorderPane/pane principal
         BorderPane borderPane = new BorderPane();
         borderPane.setLeft(vbLeft);
         borderPane.setCenter(vbCenter);
         borderPane.setRight(vbRight);
 
-        Scene scene = new Scene(borderPane, 1350, 650);
-        stage.setTitle("Rafael Vales");
+        Scene scene = new Scene(borderPane, 1250, 650);
+        stage.setTitle("Monitoramento");
         stage.setScene(scene);
+        stage.setMinWidth(1250);
         stage.show();
     }
 
     private void initLabels() {
-        labelsDates = new ArrayList<>();
-        labelsDates.add(new Label()); // Label ultima leitura de dados do servidor
-        labelsDates.add(new Label()); // Label data-hora mais recente lida do servidor
-        labelsDates.add(new Label()); // Label data-hora menos recente lida do servidor
-        for (Label l : labelsDates)
+        dates = new ArrayList<>();
+        dates.add(new Label()); // Label ultima leitura de dados do servidor
+        dates.add(new Label()); // Label data-hora mais recente lida do servidor
+        dates.add(new Label()); // Label data-hora menos recente lida do servidor
+        for (Label l : dates)
             l.setFont(new Font("Arial", 14));
-        controller.atualizaTextos(labelsDates);
+        controller.atualizaTextos(dates);
+
+        andress = new ArrayList<>();
+        andress.add(new Label()); // Label rua
+        andress.add(new Label()); // Label bairro
+        andress.add(new Label()); // Label cidade
+        andress.add(new Label()); // Label cep
+        andress.add(new Label()); // Label pais
+        for (Label l : andress)
+            l.setFont(new Font("Arial", 14));
+        controller.atualizaEndereco(andress, "Rio de Janeiro - RJ, Brasil");
     }
 
     private void initPieChart() {
         pie = new PieChart();
-        pie.setPrefWidth(450);
-        pie.setPrefHeight(325);
+        pie.setMinWidth(350);
+        pie.setPrefWidth(350);
         controller.atualizaPieChart(pie);
     }
 
@@ -108,24 +122,24 @@ public class Monitoramento extends Application {
  
         bar = new BarChart<>(xAxis,yAxis);
         bar.setTitle("Numero de veiculos em movimento por linha");
-        bar.setPrefWidth(450);
-        bar.setPrefHeight(325);
+        bar.setMinWidth(350);
+        bar.setPrefWidth(350);
         bar.setLegendVisible(false);
-        //bar.setBarGap(0.5);
-        //bar.setCategoryGap(0.5);
         controller.atualizaBarChart(bar);
     }
     
     private void initWebView() {
+        int width = 350, height = 500, zoom = 10;
         browser = new WebView();
-        browser.setPrefWidth(400);
-        browser.setPrefHeight(625);
-        browser.getEngine().load("https://maps.googleapis.com/maps/api/staticmap?center=Rio+de+Janeiro,RJ,Brazil&size=400x625&zoom=10&maptype=roadmap");
+        browser.setMinWidth(350);
+        browser.setPrefSize(width, height);
+        browser.getEngine().load("https://maps.googleapis.com/maps/api/staticmap?center=Rio+de+Janeiro,RJ,Brazil&size="+width+"x"+height+"&zoom="+zoom+"&maptype=roadmap");
     }
 
     @SuppressWarnings("unchecked")
     private void initTableView() {
         table = new TableView<>();
+        table.setMinWidth(550);
 
         // Checa a linha clicada e atualiza as coordenadas do mapa
         // eu odeio unchecked warning
@@ -143,7 +157,7 @@ public class Monitoramento extends Application {
                 cell.addEventFilter(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
                     public void handle(MouseEvent t) {
                         int id = ((TableCell)t.getSource()).getIndex();
-                        controller.atualizaWebView(browser,
+                        controller.atualizaWebView(browser, andress,
                             table.getItems().get(id).getLatitude(),
                             table.getItems().get(id).getLongitude());
                     }
@@ -154,32 +168,32 @@ public class Monitoramento extends Application {
 
         TableColumn<Dado,String> dataCol = new TableColumn<>("Data");
         dataCol.setCellValueFactory(cellData -> cellData.getValue().dataProperty());
-        dataCol.setPrefWidth(115);
+        dataCol.prefWidthProperty().bind(table.widthProperty().multiply(0.27));
         table.getColumns().add(dataCol);
 
         TableColumn<Dado,String> ordemCol = new TableColumn<>("Ordem");
         ordemCol.setCellValueFactory(cellData -> cellData.getValue().ordemProperty());
-        ordemCol.setPrefWidth(54);
+        ordemCol.prefWidthProperty().bind(table.widthProperty().multiply(0.12));
         table.getColumns().add(ordemCol);
 
         TableColumn<Dado,String> linhaCol = new TableColumn<>("Linha");
         linhaCol.setCellValueFactory(cellData -> cellData.getValue().linhaProperty());
-        linhaCol.setPrefWidth(50);
+        linhaCol.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
         table.getColumns().add(linhaCol);
 
         TableColumn<Dado,String> latitudeCol = new TableColumn<>("Latitude");
         latitudeCol.setCellValueFactory(cellData -> cellData.getValue().latitudeProperty());
-        latitudeCol.setPrefWidth(67);
+        latitudeCol.prefWidthProperty().bind(table.widthProperty().multiply(0.16));
         table.getColumns().add(latitudeCol);
 
         TableColumn<Dado,String> longitudeCol = new TableColumn<>("Longitude");
         longitudeCol.setCellValueFactory(cellData -> cellData.getValue().longitudeProperty());
-        longitudeCol.setPrefWidth(73);
+        longitudeCol.prefWidthProperty().bind(table.widthProperty().multiply(0.17));
         table.getColumns().add(longitudeCol);
 
         TableColumn<Dado,String> velocidadeCol = new TableColumn<>("Velocidade");
         velocidadeCol.setCellValueFactory(cellData -> cellData.getValue().velocidadeProperty());
-        velocidadeCol.setPrefWidth(80);
+        velocidadeCol.prefWidthProperty().bind(table.widthProperty().multiply(0.18));
         table.getColumns().add(velocidadeCol);
 
         for (TableColumn tc : table.getColumns())
