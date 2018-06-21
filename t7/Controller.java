@@ -25,6 +25,18 @@ public class Controller {
         labels.get(2).setText("Data menos recente: \t" + model.getDataMenosRecente());
     }
 
+    public void atualizaEndereco(ArrayList<Label> labels, String endStr) {
+        System.out.println("Atualizando para endereco : " + endStr);
+        int idx;
+        String[] endArray = endStr.split(", ");
+        // copia cada trecho da string para uma das labels do arraylist
+        for (idx = 0; idx < endArray.length; idx++)
+            labels.get(idx).setText(endArray[idx]);
+        // retira os restos mortais do endereco anterir, se houver
+        for (; idx < labels.size(); idx++)
+            labels.get(idx).setText("");
+    }
+
     public void atualizaPieChart(PieChart pie) {
         int total = model.getTotalVeiculos();
         int parados = model.getVeiculosParados();
@@ -53,8 +65,11 @@ public class Controller {
         bar.getData().add(barras);
     }
 
-    public void atualizaWebView(WebView browser, double latitude, double longitude) {
-        browser.getEngine().load("https://maps.googleapis.com/maps/api/staticmap?size=400x625&zoom=16&maptype=roadmap&markers=icon:https://goo.gl/xpmPM1%7C" + latitude + "," + longitude);
+    public void atualizaWebView(WebView browser, ArrayList<Label> end, double lat, double lng) {
+        int width = (int)browser.getWidth();
+        int height = (int)browser.getHeight();
+        browser.getEngine().load("https://maps.googleapis.com/maps/api/staticmap?size="+width+"x"+height+"&zoom=16&maptype=roadmap&markers=icon:https://goo.gl/xpmPM1%7C"+lat+","+lng);
+        atualizaEndereco(end, model.getEndereco(lat, lng));
     }
 
     public Button getTodasPosicoesButton(TableView<Dado> table, PieChart pie, BarChart bar, ArrayList<Label> labels) {
@@ -84,8 +99,8 @@ public class Controller {
             public void handle(ActionEvent event) {
                 TextInputDialog dialog = new TextInputDialog();
                 dialog.setTitle("Filtrar por linha");
-                dialog.setHeaderText(null);
-                dialog.setContentText("Digite a linha:");
+                dialog.setHeaderText("Informe a linha desejada.\nPara multiplas linhas, separe-as por virgula.\nEx.: 434 ou 415,426,434");
+                dialog.setContentText("Digite a(s) linha(s):");
 
                 Optional<String> result = dialog.showAndWait();
                 if (result.isPresent()) {
