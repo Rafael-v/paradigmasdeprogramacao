@@ -1,4 +1,6 @@
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -9,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -20,8 +24,27 @@ public class Model {
     private String dataUltimaLeitura = "Sem registros";
 
     public ArrayList<Dado> obterDados(String url) {
-        dados.clear();
         inserirDados(getJson(url));
+        return dados;
+    }
+
+    public ArrayList<Dado> obterDadosArquivo(File file) {
+        BufferedReader br = null;
+        try {
+            br = new BufferedReader(new FileReader(file));
+            inserirDados(new JSONParsing().parseJSON(br.readLine()));
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        } catch (ScriptException e2) {
+            e2.printStackTrace();
+        } finally {
+            try {
+                if (br != null)
+                    br.close();
+            } catch (IOException e3) {
+                e3.printStackTrace();
+            }
+        }
         return dados;
     }
 
@@ -105,6 +128,7 @@ public class Model {
 
     private void inserirDados(Map obj) {
         if (obj == null) return;
+        dados.clear();
         for (Object l : (List)obj.get("DATA"))
             dados.add(new Dado((List)l));
         dataUltimaLeitura = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
