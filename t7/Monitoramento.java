@@ -58,6 +58,7 @@ public class Monitoramento extends Application {
         HBox hbButtons = getHBox();
         hbButtons.getChildren().addAll(
             controller.getTodasPosicoesButton(table, pie, bar, dates),
+            controller.getJsonFileButton(table, pie, bar, dates, stage),
             controller.getPosicoesDaLinhaButton(table, pie, bar, dates),
             controller.getPosicoesDoOnibusButton(table, pie, bar, dates));
 
