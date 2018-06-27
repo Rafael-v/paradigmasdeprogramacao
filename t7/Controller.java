@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -15,6 +16,8 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.text.Font;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class Controller {
     private final Model model = new Model();
@@ -30,8 +33,11 @@ public class Controller {
         int idx;
         String[] endArray = endStr.split(", ");
         // copia cada trecho da string para uma das labels do arraylist
-        for (idx = 0; idx < endArray.length; idx++)
+        for (idx = 0; idx < endArray.length; idx++) {
+            if (endArray[idx].length() > 40)
+                endArray[idx] = endArray[idx].substring(0,36) + "...";
             labels.get(idx).setText(endArray[idx]);
+        }
         // retira os restos mortais do endereco anterir, se houver
         for (; idx < labels.size(); idx++)
             labels.get(idx).setText("");
@@ -72,8 +78,31 @@ public class Controller {
         atualizaEndereco(end, model.getEndereco(lat, lng));
     }
 
+    public Button getJsonFileButton(TableView<Dado> table, PieChart pie, BarChart bar, ArrayList<Label> labels, Stage stage) {
+        FileChooser fc = new FileChooser();
+        Button btn = new Button("Buscar em arquivo");
+        btn.setFont(new Font("Arial", 14));
+        
+        btn.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                ObservableList<Dado> observable = FXCollections.observableArrayList();
+                File file = fc.showOpenDialog(stage);
+                if (file != null) {
+                    for (Dado d : model.obterDadosArquivo(file))
+                        observable.add(d);
+                    table.setItems(observable);
+                    atualizaTextos(labels);
+                    atualizaPieChart(pie);
+                    atualizaBarChart(bar);
+                }
+            }
+        });
+
+        return btn;
+    }
+
     public Button getTodasPosicoesButton(TableView<Dado> table, PieChart pie, BarChart bar, ArrayList<Label> labels) {
-        Button btn = new Button("Obter todas linhas");
+        Button btn = new Button("Buscar todas linhas");
         btn.setFont(new Font("Arial", 14));
         
         btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -92,13 +121,13 @@ public class Controller {
     }
 
     public Button getPosicoesDaLinhaButton(TableView<Dado> table, PieChart pie, BarChart bar, ArrayList<Label> labels) {
-        Button btn = new Button("Filtrar por linha");
+        Button btn = new Button("Buscar linha");
         btn.setFont(new Font("Arial", 14));
     
         btn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 TextInputDialog dialog = new TextInputDialog();
-                dialog.setTitle("Filtrar por linha");
+                dialog.setTitle("Buscar linha");
                 dialog.setHeaderText("Informe a linha desejada.\nPara multiplas linhas, separe-as por virgula.\nEx.: 434 ou 415,426,434");
                 dialog.setContentText("Digite a(s) linha(s):");
 
@@ -119,13 +148,13 @@ public class Controller {
     }
 
     public Button getPosicoesDoOnibusButton(TableView<Dado> table, PieChart pie, BarChart bar, ArrayList<Label> labels) {
-        Button btn = new Button("Filtrar por onibus");
+        Button btn = new Button("Buscar onibus");
         btn.setFont(new Font("Arial", 14));
 
         btn.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 TextInputDialog dialog = new TextInputDialog();
-                dialog.setTitle("Filtrar por onibus");
+                dialog.setTitle("Buscar onibus");
                 dialog.setHeaderText(null);
                 dialog.setContentText("Digite a ordem do onibus:");
 
