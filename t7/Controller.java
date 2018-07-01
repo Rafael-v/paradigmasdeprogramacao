@@ -14,7 +14,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.text.Font;
-import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -29,7 +28,6 @@ public class Controller {
     }
 
     public void atualizaEndereco(ArrayList<Label> labels, String endStr) {
-        System.out.println("Atualizando para endereco : " + endStr);
         int idx;
         String[] endArray = endStr.split(", ");
         // copia cada trecho da string para uma das labels do arraylist
